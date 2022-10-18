@@ -2,7 +2,7 @@ package com.ll.finalproject.product.Entity;
 
 import com.ll.finalproject.base.BaseEntity;
 import com.ll.finalproject.member.Entity.Member;
-import com.ll.finalproject.post.Entity.PostKeyword;
+import com.ll.finalproject.post.entity.PostKeyword;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
