@@ -1,0 +1,30 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: dho88dho@gmail.com
+    password: cjaqdnxjyzsdgmqp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  profiles:
+    thymeleaf:
+      cache: false
+      prefix: file:src/main/resources/templates/
+    devtools:
+      livereload:
+        enabled: true
+      restart:
+        enabled: true
+  datasource:
+    url: jdbc:mariadb://:3306/final_project?useUnicode=true&characterEncoding=utf8&serverTimeZone=Asia/Seoul
+    username: root
+    password: 1234
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create

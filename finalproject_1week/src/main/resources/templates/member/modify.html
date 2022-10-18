@@ -1,0 +1,23 @@
+<html xmlns:th="http://thymeleaf.org">
+<body>
+
+<form th:action="@{|/member/modify|}" th:object="${MemberModifyForm}" method="post">
+
+    <div>
+        <label>닉네임</label>
+        <input type="text" name="nickname" placeholder="닉네임을 입력해주세요." th:value="${loggedInMember.nickname}" />
+    </div>
+
+    <div>
+        <label>이메일</label>
+        <input type="email" name="email" placeholder="이메일을 입력해주세요." th:value="${loggedInMember.email}" required />
+    </div>
+
+    <div>
+        <button type="submit">
+            수정하기
+        </button>
+    </div>
+</form>
+</body>
+</html>
