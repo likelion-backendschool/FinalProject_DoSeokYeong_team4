@@ -1,4 +1,4 @@
-package com.ll.finalproject.post.entity;
+package com.ll.finalproject.postkeyword.entity;
 
 import com.ll.finalproject.base.BaseEntity;
 import lombok.Getter;

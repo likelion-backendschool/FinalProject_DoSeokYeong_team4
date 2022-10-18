@@ -4,15 +4,20 @@ import com.ll.finalproject.member.Entity.Member;
 import com.ll.finalproject.member.service.MemberService;
 import com.ll.finalproject.post.entity.Post;
 import com.ll.finalproject.post.service.PostService;
+import com.ll.finalproject.posthashtag.service.PostHashTagService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 @Configuration
 public class DevInitData {
 
     @Bean
-    public CommandLineRunner initData(MemberService memberService, PostService postService) {
+    public CommandLineRunner initData(MemberService memberService, PostService postService, PostHashTagService postHashTagService) {
 
         return args -> {
             Member member1 = memberService.join("user1", "1234", "dho88dho@naver.com");
@@ -30,6 +35,14 @@ public class DevInitData {
                     " ***\n" +
                     " 5555555555555555\n" +
                     " > 666666666666666666", "<p>1111111111</p><h1>2222222222222222</h1><p><strong>33333333333333</strong></p><p><em>444444444444444</em></p><div contenteditable=\"false\"><hr></div><p>5555555555555555</p><blockquote><p>666666666666666666</p></blockquote>", member1);
+            String keywords = "#자바 #스프링부트 #스프링배치";
+
+            HashSet<String> keywordSet = Arrays.stream(keywords.split("#"))
+                    .parallel().filter(s -> s.trim().length() > 0)
+                    .map(String::trim)
+                    .collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
+
+            postHashTagService.addPostHashTag(keywordSet, member1, post4);
         };
     }
 
