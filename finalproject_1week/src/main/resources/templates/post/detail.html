@@ -1,0 +1,24 @@
+<html xmlns:th="http://thymeleaf.org">
+<body>
+<div>
+    <label>번호</label>
+    <div th:text="${post.id}"></div>
+</div>
+<div>
+    <label>제목</label>
+    <div th:text="${post.subject}"></div>
+</div>
+<div>
+    <label>작성날짜</label>
+    <div th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+</div>
+<div>
+    <label>수정날짜</label>
+    <div th:text="${#temporals.format(post.updateDate, 'yyyy-MM-dd HH:mm')}"></div>
+</div>
+<div>
+    <label>내용</label>
+    <div th:text="${post.content}"></div>
+</div>
+</body>
+</html>
