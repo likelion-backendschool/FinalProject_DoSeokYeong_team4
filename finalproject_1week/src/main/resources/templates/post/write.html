@@ -1,0 +1,46 @@
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org/"
+        layout:decorate="~{layout}">
+
+
+<div layout:fragment="content">
+    <form th:action="@{|/post/write|}" th:object="${PostCreateForm}" method="post">
+
+        <div>
+            <label>글제목</label>
+            <input type="text" name="subject" placeholder="제목을 입력해주세요."/>
+        </div>
+        <div>
+            <label>글내용</label>
+            <textarea name="content" style="display: none" id="hiddenArea"></textarea>
+            <div id="editor"></div>
+        </div>
+        <div>
+            <label>해시태그</label>
+            <input type="text" name="keywords" placeholder="해시태그를 입력해주세요.">
+        </div>
+        <div>
+            <button type="submit">
+                글 작성
+            </button>
+        </div>
+    </form>
+</div>
+
+<script layout:fragment="script" type='text/javascript' th:inline="javascript">
+    const Editor = toastui.Editor;
+
+    const editor = new Editor({
+        el: document.querySelector('#editor'),
+        height: '600px',
+        initialEditType: 'markdown',
+        previewStyle: 'vertical',
+        initialValue: document.getElementById("hiddenArea").innerText
+    });
+
+    $("#form_notice").on("submit", function () {
+        $("#hiddenArea").val(editor.getMarkdown());
+    })
+</script>
+</html>

@@ -1,23 +1,25 @@
-<html xmlns:th="http://thymeleaf.org">
-<body>
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org/"
+        layout:decorate="~{layout}">
+<div layout:fragment="content">
+    <form th:action="@{|/member/modify|}" th:object="${MemberModifyForm}" method="post">
 
-<form th:action="@{|/member/modify|}" th:object="${MemberModifyForm}" method="post">
+        <div>
+            <label>닉네임</label>
+            <input type="text" name="nickname" placeholder="닉네임을 입력해주세요." th:value="${loggedInMember.nickname}" />
+        </div>
 
-    <div>
-        <label>닉네임</label>
-        <input type="text" name="nickname" placeholder="닉네임을 입력해주세요." th:value="${loggedInMember.nickname}" />
-    </div>
+        <div>
+            <label>이메일</label>
+            <input type="email" name="email" placeholder="이메일을 입력해주세요." th:value="${loggedInMember.email}" required />
+        </div>
 
-    <div>
-        <label>이메일</label>
-        <input type="email" name="email" placeholder="이메일을 입력해주세요." th:value="${loggedInMember.email}" required />
-    </div>
-
-    <div>
-        <button type="submit">
-            수정하기
-        </button>
-    </div>
-</form>
-</body>
+        <div>
+            <button type="submit">
+                수정하기
+            </button>
+        </div>
+    </form>
+</div>
 </html>

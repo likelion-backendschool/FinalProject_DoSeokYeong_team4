@@ -34,4 +34,10 @@ public class PostController {
 
         return "post/detail";
     }
+
+    @GetMapping("/write")
+    public String showWrite() {
+
+        return "post/write";
+    }
 }

@@ -1,33 +1,35 @@
-<html xmlns:th="http://thymeleaf.org">
-<body>
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org/"
+        layout:decorate="~{layout}">
+<div layout:fragment="content">
+    <form th:action="@{|/member/join|}" th:object="${MemberCreateForm}" method="post">
 
-<form th:action="@{|/member/join|}" th:object="${MemberCreateForm}" method="post">
-
-    <div>
-        <label>사용자 ID</label>
-        <input type="text" name="username" placeholder="사용하실 아이디를 입력해주세요."/>
-    </div>
-    <div>
-        <label>닉네임</label>
-        <input type="text" name="nickname" placeholder="닉네임을 입력해주세요.">
-    </div>
-    <div>
-        <label>비밀번호</label>
-        <input type="password" name="password" placeholder="비밀번호를 입력해주세요.">
-    </div>
-    <div>
-        <label>비밀번호 확인</label>
-        <input type="password" name="passwordConfirm" placeholder="비밀번호를 입력해주세요.">
-    </div>
-    <div>
-        <label>이메일</label>
-        <input type="email" name="email" placeholder="이메일을 입력해주세요.">
-    </div>
-    <div>
-        <button type="submit">
-            가입하기
-        </button>
-    </div>
-</form>
-</body>
+        <div>
+            <label>사용자 ID</label>
+            <input type="text" name="username" placeholder="사용하실 아이디를 입력해주세요."/>
+        </div>
+        <div>
+            <label>닉네임</label>
+            <input type="text" name="nickname" placeholder="닉네임을 입력해주세요.">
+        </div>
+        <div>
+            <label>비밀번호</label>
+            <input type="password" name="password" placeholder="비밀번호를 입력해주세요.">
+        </div>
+        <div>
+            <label>비밀번호 확인</label>
+            <input type="password" name="passwordConfirm" placeholder="비밀번호를 입력해주세요.">
+        </div>
+        <div>
+            <label>이메일</label>
+            <input type="email" name="email" placeholder="이메일을 입력해주세요.">
+        </div>
+        <div>
+            <button type="submit">
+                가입하기
+            </button>
+        </div>
+    </form>
+</div>
 </html>

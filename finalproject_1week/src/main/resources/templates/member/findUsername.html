@@ -1,13 +1,21 @@
-<form th:action="@{|/member/findUsername|}" method="post">
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org/"
+        layout:decorate="~{layout}">
 
-    <div>
-        <label>이메일</label>
-        <input type="email" name="email" placeholder="이메일을 입력해주세요." required>
-    </div>
+<div layout:fragment="content">
+    <form th:action="@{|/member/findUsername|}" method="post">
 
-    <div>
-        <button type="submit">
-            아이디찾기
-        </button>
-    </div>
-</form>
+        <div>
+            <label>이메일</label>
+            <input type="email" name="email" placeholder="이메일을 입력해주세요." required>
+        </div>
+
+        <div>
+            <button type="submit">
+                아이디찾기
+            </button>
+        </div>
+    </form>
+</div>
+</html>
