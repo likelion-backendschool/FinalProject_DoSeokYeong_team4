@@ -14,5 +14,8 @@ public class PostCreateForm {
     @NotEmpty(message = "내용은 필수항목입니다.")
     private String content;
 
+    private String contentHtml;
+
+    @NotEmpty(message = "해시태그는 필수항목입니다.")
     private String keywords;
 }

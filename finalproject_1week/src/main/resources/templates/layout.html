@@ -1,26 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
+
 <head>
     <meta charset="UTF-8">
-    <!doctype html>
-      <html lang="ko">
 
-      <head>
-      <meta charset="utf-8">
-  <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
 </head>
 
 <body>
 
 <main>
+    <!-- Main Header -->
+    <header th:replace="header :: headerFragment"></header>
 
-  <!-- Main Headerbar -->
-  <header th:replace="header :: headerFragment"></header>
+    <!-- Main Content -->
+    <th:block layout:fragment="content"></th:block>
 
-  <!-- Main Content -->
-  <th:block layout:fragment="content"></th:block>
-
-  <footer th:replace="footer :: footerFragment"></footer>
+    <footer th:replace="footer :: footerFragment"></footer>
 </main>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"

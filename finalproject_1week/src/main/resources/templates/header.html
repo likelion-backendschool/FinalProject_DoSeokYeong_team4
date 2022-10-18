@@ -1,31 +1,9 @@
 <!doctype html>
 <html lang="ko"
-      xmlns:th="http://thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://thymeleaf.org/"
+          xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
 
 <aside th:fragment="headerFragment">
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
-                    <li class="nav-item d-block-540px" sec:authorize="isAnonymous()">
-                        <a class="nav-link" th:href="@{/member/login}">
-                            <i class="material-icons">login</i> 로그인</a>
-                        </a>
-                    </li>
-                    <li class="nav-item d-block-540px" sec:authorize="isAnonymous()">
-                        <a class="nav-link" th:href="@{/member/login}">
-                            <i class="material-icons">person_add</i> 회원가입</a>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:with="link='/article/create'" th:classappend="${#httpServletRequest.requestURI == link} ? 'active' : ''" th:href="${link}">
-                            <i class="material-icons">edit</i> 투표등록</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
 </aside>
 </html>

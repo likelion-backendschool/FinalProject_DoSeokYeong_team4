@@ -34,7 +34,7 @@ public class MailService {
         simpleMessage.setSubject("임시 비밀번호입니다.");
 
         // 메일 내용
-        simpleMessage.setText(newPassword);
+        simpleMessage.setText("회원님의 임시비밀번호는 " + newPassword + "입니다.");
 
         // 메일 발송
         javaMailSender.send(simpleMessage);

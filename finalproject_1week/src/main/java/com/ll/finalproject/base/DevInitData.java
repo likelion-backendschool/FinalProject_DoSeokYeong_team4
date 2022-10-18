@@ -22,6 +22,14 @@ public class DevInitData {
             Post post1 = postService.createPost("subject1", "content1", "contentHtml1", member1);
             Post post2 = postService.createPost("subject2", "content2", "contentHtml2", member2);
             Post post3 = postService.createPost("subject3", "content3", "contentHtml3", member3);
+            Post post4 = postService.createPost("subject4", "1111111111\n" +
+                    " # 2222222222222222\n" +
+                    " **33333333333333**\n" +
+                    " *444444444444444*\n" +
+                    " \n" +
+                    " ***\n" +
+                    " 5555555555555555\n" +
+                    " > 666666666666666666", "<p>1111111111</p><h1>2222222222222222</h1><p><strong>33333333333333</strong></p><p><em>444444444444444</em></p><div contenteditable=\"false\"><hr></div><p>5555555555555555</p><blockquote><p>666666666666666666</p></blockquote>", member1);
         };
     }
 
