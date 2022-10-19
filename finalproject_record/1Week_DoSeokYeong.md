@@ -31,6 +31,34 @@
   - QueryDsl(https://github.com/jhs512/sb_qsl)
   - 해시태그(https://github.com/jhs512/sb_exam_2022_09_05__app10)
   - Toast Editor, layout(https://github.com/likelion-backendschool/Your_little_worries)
-- 비밀번호 찾기에서 이용했던 메일 서비스는 이번에 처음 해봤기 때문에 해당 블로그(https://kitty-geno.tistory.com/43) 참고했습니다.
+- 메일 서비스는 이번에 처음 해봤기 때문에 해당 블로그(https://kitty-geno.tistory.com/43) 참고했습니다.
+
+**진행 순서**
+1. **회원가입 및 회원가입 이메일 발송**
+- `validation`과 html에서도 required 이용하여 이중으로 공백 확인
+- Unique 어노테이션을 이용하여 중복된 username을 사용한 회원 가입 방지
+  ```
+  @PostMapping("/join")
+    public String doJoin(@Valid MemberCreateForm memberCreateForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "member/join";
+        }
+        if (!memberCreateForm.getPassword().equals(memberCreateForm.getPasswordConfirm())) {
+            return "member/join";
+        }
+
+        if (memberCreateForm.getNickname().equals("") || memberCreateForm.getNickname().trim().length() < 1) { // 닉네임 설정 안한 경우 권한 레벨 3
+            memberService.join(memberCreateForm.getUsername(), memberCreateForm.getPassword(), memberCreateForm.getEmail());
+        } else {
+            memberService.join(memberCreateForm.getUsername(), memberCreateForm.getPassword(), memberCreateForm.getNickname(),
+                    memberCreateForm.getEmail());
+        }
+        mailService.sendMail(memberCreateForm.getEmail(), "회원 가입을 축하합니다",
+                memberCreateForm.getUsername() + "님의 회원 가입을 축하합니다");
+
+        return "redirect:/msg=joinSuccess";
+    }
+ ```
+ - 닉네임 등록 유무에 따라 다른 권한을 부여하고 mailService를 통해 가입 축하 메일을 
 
 ### 특이사항
