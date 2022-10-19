@@ -1,2 +1,27 @@
-메인페이지
-최신글 100개
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org/"
+        layout:decorate="~{layout}">
+<div layout:fragment="content">
+    <table>
+        <tr>
+            <th>id</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>작성날짜</th>
+            <th>수정날짜</th>
+            <th>해시태그</th>
+        </tr>
+        <tr th:each="postDto : ${postDtoList}">
+            <td th:text="${postDto.post.id}"></td>
+            <td th:text="${postDto.post.subject}"></td>
+            <td th:text="${postDto.post.authorId.username}"></td>
+            <td th:text="${#temporals.format(postDto.post.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="${#temporals.format(postDto.post.updateDate, 'yyyy-MM-dd HH:mm')}"></td>
+            <td th:each="postHashTag : ${postDto.postHashTagList}">
+                <a th:href="@{|/post/list?keyword=${postHashTag.postKeyword.content}|}" th:text="|#${postHashTag.postKeyword.content}|"></a>
+            </td>
+        </tr>
+    </table>
+</div>
+</html>

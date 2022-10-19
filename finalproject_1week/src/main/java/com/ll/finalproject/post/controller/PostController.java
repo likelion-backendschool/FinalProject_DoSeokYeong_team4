@@ -3,6 +3,7 @@ package com.ll.finalproject.post.controller;
 import com.ll.finalproject.member.entity.Member;
 import com.ll.finalproject.member.service.MemberService;
 import com.ll.finalproject.post.PostCreateForm;
+import com.ll.finalproject.post.dto.PostDto;
 import com.ll.finalproject.post.entity.Post;
 import com.ll.finalproject.post.service.PostService;
 import com.ll.finalproject.posthashtag.entity.PostHashTag;
@@ -29,14 +30,7 @@ public class PostController {
     private final PostHashTagService postHashTagService;
     private final PostKeywordService postKeywordService;
 
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    private class PostDto {
-        private Post post;
-        private List<PostHashTag> postHashTagList;
-    }
+
 
     @GetMapping("/list")
     public String showList(Model model, Principal principal,

@@ -22,6 +22,12 @@ public class PostService {
         return postList;
     }
 
+    public List<Post> findTop100ByOrderByIdDesc() {
+        List<Post> postList = postRepository.findTop100ByOrderByIdDesc();
+
+        return postList;
+    }
+
     public Post createPost(String subject, String content, String contentHtml, Member author) {
         Post post = Post.builder()
                 .subject(subject)
