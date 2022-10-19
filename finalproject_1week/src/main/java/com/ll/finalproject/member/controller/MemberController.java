@@ -48,7 +48,8 @@ public class MemberController {
             memberService.join(memberCreateForm.getUsername(), memberCreateForm.getPassword(), memberCreateForm.getNickname(),
                     memberCreateForm.getEmail());
         }
-
+        mailService.sendMail(memberCreateForm.getEmail(), "회원 가입을 축하합니다",
+                memberCreateForm.getUsername() + "님의 회원 가입을 축하합니다");
 
         return "redirect:/msg=joinSuccess";
     }
@@ -155,7 +156,8 @@ public class MemberController {
 
         String newPassword = UUID.randomUUID().toString().substring(0, 8);
 
-        mailService.sendMail(email, newPassword);
+        mailService.sendMail(email, "회원님의 임시비밀번호입니다.",
+                member.getUsername() + "회원님의 임시비밀번호는" + newPassword + "입니다.");
 
         memberService.modifyPassword(member, newPassword);
 

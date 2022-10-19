@@ -13,7 +13,7 @@ public class MailService {
 
     private final JavaMailSender javaMailSender;
 
-    public void sendMail(String email, String newPassword) {
+    public void sendMail(String email,String mailSubject, String mailContent) {
 
         // 수신 대상을 담을 ArrayList 생성
         ArrayList<String> toUserList = new ArrayList<>();
@@ -31,10 +31,10 @@ public class MailService {
         simpleMessage.setTo((String[]) toUserList.toArray(new String[toUserSize]));
 
         // 메일 제목
-        simpleMessage.setSubject("임시 비밀번호입니다.");
+        simpleMessage.setSubject(mailSubject);
 
         // 메일 내용
-        simpleMessage.setText("회원님의 임시비밀번호는 " + newPassword + "입니다.");
+        simpleMessage.setText(mailContent);
 
         // 메일 발송
         javaMailSender.send(simpleMessage);
