@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Getter
@@ -17,6 +18,7 @@ import javax.persistence.Entity;
 @ToString(callSuper = true)
 public class Member extends BaseEntity {
 
+    @Column(unique = true)
     private String username; // 로그인 아이디
 
     private String password; // 로그인 비밀번호
