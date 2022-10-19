@@ -1,28 +1,24 @@
 package com.ll.finalproject.post.controller;
 
-import com.ll.finalproject.member.Entity.Member;
+import com.ll.finalproject.member.entity.Member;
 import com.ll.finalproject.member.service.MemberService;
 import com.ll.finalproject.post.PostCreateForm;
 import com.ll.finalproject.post.entity.Post;
 import com.ll.finalproject.post.service.PostService;
 import com.ll.finalproject.posthashtag.entity.PostHashTag;
 import com.ll.finalproject.posthashtag.service.PostHashTagService;
-import lombok.RequiredArgsConstructor;
+import com.ll.finalproject.postkeyword.entity.PostKeyword;
+import com.ll.finalproject.postkeyword.service.PostKeywordService;
+import lombok.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,13 +27,45 @@ public class PostController {
     private final PostService postService;
     private final MemberService memberService;
     private final PostHashTagService postHashTagService;
+    private final PostKeywordService postKeywordService;
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    private class PostDto {
+        private Post post;
+        private List<PostHashTag> postHashTagList;
+    }
 
     @GetMapping("/list")
-    public String showList(Model model) {
-        List<Post> postList = postService.findAllPost();
+    public String showList(Model model, Principal principal,
+                           @RequestParam(defaultValue = "", value = "keyword") String keyword) {
+        List<PostDto> postDtoList = new ArrayList<>();
 
-        model.addAttribute("postList", postList);
+        System.out.println(keyword);
 
+        if (principal == null || keyword.equals("")) {
+            List<Post> postList = postService.findAllPost();
+            for (Post post : postList) {
+                List<PostHashTag> postHashTagList = postHashTagService.findAllByPost(post);
+                PostDto postDto = new PostDto(post, postHashTagList);
+                postDtoList.add(postDto);
+            }
+
+            model.addAttribute("postDtoList", postDtoList);
+            return "post/list";
+        }
+        Member member = memberService.findByUsername(principal.getName());
+        PostKeyword postKeyword = postKeywordService.findByContent(keyword);
+        List<Post> postList = postService.findAllPostByMemberIdAndPostKeyword(member.getId(), postKeyword.getContent());
+        for (Post post : postList) {
+            List<PostHashTag> postHashTagList = postHashTagService.findAllByPost(post);
+            PostDto postDto = new PostDto(post, postHashTagList);
+            postDtoList.add(postDto);
+        }
+
+        model.addAttribute("postDtoList", postDtoList);
         return "post/list";
     }
 
@@ -157,4 +185,6 @@ public class PostController {
 
         return String.format("redirect:/post/list");
     }
+
+
 }

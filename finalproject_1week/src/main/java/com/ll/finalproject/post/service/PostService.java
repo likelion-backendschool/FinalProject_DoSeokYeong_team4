@@ -1,9 +1,10 @@
 package com.ll.finalproject.post.service;
 
-import com.ll.finalproject.member.Entity.Member;
+import com.ll.finalproject.member.entity.Member;
 import com.ll.finalproject.post.entity.Post;
 import com.ll.finalproject.post.repository.PostRepository;
 import com.ll.finalproject.posthashtag.repository.PostHashTagRepository;
+import com.ll.finalproject.postkeyword.entity.PostKeyword;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -53,5 +54,9 @@ public class PostService {
     public void deletePost(Post post) {
         postHashTagRepository.deleteAllByPostId(post);
         postRepository.delete(post);
+    }
+
+    public List<Post> findAllPostByMemberIdAndPostKeyword(Long id, String content) {
+        return postRepository.findAllPostByMemberIdAndPostKeyword(id, content);
     }
 }

@@ -1,6 +1,6 @@
 package com.ll.finalproject.member.service;
 
-import com.ll.finalproject.member.Entity.Member;
+import com.ll.finalproject.member.entity.Member;
 import com.ll.finalproject.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

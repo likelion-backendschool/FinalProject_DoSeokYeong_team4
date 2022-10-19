@@ -1,6 +1,6 @@
 package com.ll.finalproject.base;
 
-import com.ll.finalproject.member.Entity.Member;
+import com.ll.finalproject.member.entity.Member;
 import com.ll.finalproject.member.service.MemberService;
 import com.ll.finalproject.post.entity.Post;
 import com.ll.finalproject.post.service.PostService;
@@ -43,6 +43,7 @@ public class DevInitData {
                     .collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
 
             postHashTagService.setPostHashTag(keywordSet, member1, post4);
+
             String keywords2 = "#자바 #스프링부트 #테스트 #확인";
 
             HashSet<String> keywordSet2 = Arrays.stream(keywords2.split("#"))
@@ -50,7 +51,8 @@ public class DevInitData {
                     .map(String::trim)
                     .collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
 
-            postHashTagService.setPostHashTag(keywordSet2, member1, post4);
+            postHashTagService.setPostHashTag(keywordSet2, member1, post1);
+
         };
     }
 

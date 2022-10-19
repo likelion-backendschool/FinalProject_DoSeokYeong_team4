@@ -1,7 +1,7 @@
 package com.ll.finalproject.post.entity;
 
 import com.ll.finalproject.base.BaseEntity;
-import com.ll.finalproject.member.Entity.Member;
+import com.ll.finalproject.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -10,14 +10,38 @@
             <th>작성자</th>
             <th>작성날짜</th>
             <th>수정날짜</th>
+            <th>해시태그</th>
         </tr>
-        <tr th:each="post : ${postList}">
-            <td th:text="${post.id}"></td>
-            <td th:text="${post.subject}"></td>
-            <td th:text="${post.authorId.username}"></td>
-            <td th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></td>
-            <td th:text="${#temporals.format(post.updateDate, 'yyyy-MM-dd HH:mm')}"></td>
+        <tr th:each="postDto : ${postDtoList}">
+            <td th:text="${postDto.post.id}"></td>
+            <td th:text="${postDto.post.subject}"></td>
+            <td th:text="${postDto.post.authorId.username}"></td>
+            <td th:text="${#temporals.format(postDto.post.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="${#temporals.format(postDto.post.updateDate, 'yyyy-MM-dd HH:mm')}"></td>
+            <td th:each="postHashTag : ${postDto.postHashTagList}">
+                <a th:text="|#${postHashTag.postKeyword.content}|"></a>
+            </td>
         </tr>
     </table>
 </div>
+<!--<div layout:fragment="content">-->
+<!--    <table>-->
+<!--        <tr>-->
+<!--            <th>id</th>-->
+<!--            <th>제목</th>-->
+<!--            <th>작성자</th>-->
+<!--            <th>작성날짜</th>-->
+<!--            <th>수정날짜</th>-->
+<!--            <th>해시태그</th>-->
+<!--        </tr>-->
+<!--        <tr th:each="post : ${postList}">-->
+<!--            <td th:text="${post.id}"></td>-->
+<!--            <td th:text="${post.subject}"></td>-->
+<!--            <td th:text="${post.authorId.username}"></td>-->
+<!--            <td th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></td>-->
+<!--            <td th:text="${#temporals.format(post.updateDate, 'yyyy-MM-dd HH:mm')}"></td>-->
+<!--            <td th:text="${post.authorId.username}"></td>-->
+<!--        </tr>-->
+<!--    </table>-->
+<!--</div>-->
 </html>

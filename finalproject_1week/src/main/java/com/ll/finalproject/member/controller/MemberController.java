@@ -1,7 +1,7 @@
 package com.ll.finalproject.member.controller;
 
 import com.ll.finalproject.mail.MailService;
-import com.ll.finalproject.member.Entity.Member;
+import com.ll.finalproject.member.entity.Member;
 import com.ll.finalproject.member.MemberCreateForm;
 import com.ll.finalproject.member.MemberModifyForm;
 import com.ll.finalproject.member.MemberPasswordModifyForm;

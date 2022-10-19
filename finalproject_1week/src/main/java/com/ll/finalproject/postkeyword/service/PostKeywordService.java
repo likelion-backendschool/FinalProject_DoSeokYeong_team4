@@ -19,4 +19,8 @@ public class PostKeywordService {
 
         return postKeyword;
     }
+
+    public PostKeyword findByContent(String content) {
+        return postKeywordRepository.findByContent(content).orElse(null);
+    }
 }

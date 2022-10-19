@@ -1,6 +1,6 @@
 package com.ll.finalproject.posthashtag.service;
 
-import com.ll.finalproject.member.Entity.Member;
+import com.ll.finalproject.member.entity.Member;
 import com.ll.finalproject.post.entity.Post;
 import com.ll.finalproject.posthashtag.entity.PostHashTag;
 import com.ll.finalproject.posthashtag.repository.PostHashTagRepository;
@@ -22,6 +22,7 @@ public class PostHashTagService {
     private final PostHashTagRepository postHashTagRepository;
 
     public void setPostHashTag(HashSet<String> keywordSet, Member member, Post post) {
+        System.out.println(keywordSet.toString());
         List<PostHashTag> oldHashTags = postHashTagRepository.findAllByPostId(post); // 기존 해시 태그들
 
         List<PostHashTag> needToDelete = new ArrayList<>();
@@ -63,15 +64,14 @@ public class PostHashTagService {
 
         if (postKeyword == null) { // 없으면 만든다.
             postKeyword = postKeywordService.createPostKeywordService(keywordContent);
-            PostHashTag postHashTag = PostHashTag.builder()
-                    .postId(post)
-                    .memberId(member)
-                    .postKeyword(postKeyword)
-                    .build();
-
-            postHashTagRepository.save(postHashTag);
         }
+        PostHashTag postHashTag = PostHashTag.builder()
+                .postId(post)
+                .memberId(member)
+                .postKeyword(postKeyword)
+                .build();
 
+        postHashTagRepository.save(postHashTag);
     }
 
     public List<PostHashTag> findAllByPost(Post post) {

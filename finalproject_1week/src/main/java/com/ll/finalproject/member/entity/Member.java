@@ -1,4 +1,4 @@
-package com.ll.finalproject.member.Entity;
+package com.ll.finalproject.member.entity;
 
 import com.ll.finalproject.base.BaseEntity;
 import lombok.Getter;
