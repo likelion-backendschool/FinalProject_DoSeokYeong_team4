@@ -37,4 +37,14 @@ public class PostService {
 
         return post;
     }
+
+    public Post modifyPost(Post post, String subject, String content, String contentHtml) {
+        post.setSubject(subject);
+        post.setContent(content);
+        post.setContentHtml(contentHtml);
+
+        postRepository.save(post);
+
+        return post;
+    }
 }

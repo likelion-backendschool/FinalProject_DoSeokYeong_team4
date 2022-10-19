@@ -27,9 +27,7 @@
     </div>
     <div>
         <label>해시태그</label>
-        <div th:each="postHashTag : ${postHashTagList}">
-            <a th:text="|#${postHashTag.postKeyword.content}|"></a>
-        </div>
+        <div th:text="${postHashTags}"></div>
     </div>
 </div>
 

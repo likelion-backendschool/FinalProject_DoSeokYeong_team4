@@ -4,6 +4,7 @@ import com.ll.finalproject.base.BaseEntity;
 import com.ll.finalproject.member.Entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
@@ -11,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Getter
+@Setter
 @Entity
 @SuperBuilder
 @NoArgsConstructor

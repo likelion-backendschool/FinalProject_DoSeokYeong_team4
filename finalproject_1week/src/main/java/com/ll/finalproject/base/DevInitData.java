@@ -42,7 +42,15 @@ public class DevInitData {
                     .map(String::trim)
                     .collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
 
-            postHashTagService.addPostHashTag(keywordSet, member1, post4);
+            postHashTagService.setPostHashTag(keywordSet, member1, post4);
+            String keywords2 = "#자바 #스프링부트 #테스트 #확인";
+
+            HashSet<String> keywordSet2 = Arrays.stream(keywords2.split("#"))
+                    .parallel().filter(s -> s.trim().length() > 0)
+                    .map(String::trim)
+                    .collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
+
+            postHashTagService.setPostHashTag(keywordSet2, member1, post4);
         };
     }
 

@@ -46,8 +46,13 @@ public class PostController {
         Post post = postService.findById(id);
         List<PostHashTag> postHashTagList = postHashTagService.findAllByPost(post);
 
+        String postHashTags = "";
+        for (PostHashTag postHashTag : postHashTagList) {
+            postHashTags += "#" + postHashTag.getPostKeyword().getContent() + " ";
+        }
+
         model.addAttribute("post", post);
-        model.addAttribute("postHashTagList", postHashTagList);
+        model.addAttribute("postHashTags", postHashTags);
 
         return "post/detail";
     }
@@ -78,19 +83,59 @@ public class PostController {
                 .map(String::trim)
                 .collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
 
-        postHashTagService.addPostHashTag(keywordSet, member, post);
+        postHashTagService.setPostHashTag(keywordSet, member, post);
 
         return String.format("redirect:/post/%d".formatted(post.getId()));
     }
 
     @GetMapping("/{id}/modify")
+    @PreAuthorize("isAuthenticated()")
     public String showModify(@PathVariable("id") Long id, Model model) {
         Post post = postService.findById(id);
         List<PostHashTag> postHashTagList = postHashTagService.findAllByPost(post);
+        String postHashTags = "";
+        for (PostHashTag postHashTag : postHashTagList) {
+            postHashTags += "#" + postHashTag.getPostKeyword().getContent() + " ";
+        }
 
         model.addAttribute("post", post);
-        model.addAttribute("postHashTagList", postHashTagList);
+        model.addAttribute("postHashTags", postHashTags);
 
         return "post/modify";
+    }
+
+    @PostMapping("/{id}/modify")
+    @PreAuthorize("isAuthenticated()")
+    public String doModify(@Valid PostCreateForm postCreateForm, BindingResult bindingResult, Principal principal,
+                           @PathVariable("id") Long id) {
+        if (bindingResult.hasErrors()) {
+            return "post/modify";
+        }
+        // 로그인 유저
+        Member member = memberService.findByUsername(principal.getName());
+
+        // 포스트
+        Post post = postService.findById(id);
+
+        // 작성자 아닐경우
+        if (post.getAuthorId() != member) {
+            return "post/modify";
+        }
+
+        // 수정
+        postService.modifyPost(post, postCreateForm.getSubject(), postCreateForm.getContent(),
+                postCreateForm.getContentHtml());
+
+        // 해시태그 목록
+        String keywords = postCreateForm.getKeywords();
+
+        HashSet<String> keywordSet = Arrays.stream(keywords.split("#"))
+                .parallel().filter(s -> s.trim().length() > 0)
+                .map(String::trim)
+                .collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
+
+        postHashTagService.setPostHashTag(keywordSet, member, post);
+
+        return String.format("redirect:/post/%d".formatted(post.getId()));
     }
 }

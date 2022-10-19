@@ -4,10 +4,10 @@
         layout:decorate="~{layout}">
 
 <div layout:fragment="content">
-    <form id="form_post" th:action="@{|/post/write|}" th:object="${PostCreateForm}" method="post">
+    <form id="form_post" th:action="@{|/post/${post.id}/modify|}" th:object="${PostCreateForm}" method="post">
         <div>
             <label>글제목</label>
-            <input type="text" name="subject" placeholder="제목을 입력해주세요." required/>
+            <input th:value="${post.subject}" type="text" name="subject" placeholder="제목을 입력해주세요." required/>
         </div>
         <div>
             <label>글내용</label>
@@ -17,17 +17,18 @@
         </div>
         <div>
             <label>해시태그</label>
-            <input type="text" name="keywords" placeholder="해시태그를 입력해주세요." required/>
+            <input th:value="${postHashTags}" type="text" name="keywords" placeholder="해시태그를 입력해주세요." required/>
         </div>
         <div>
             <button type="submit">
-                글 작성
+                글 수정
             </button>
         </div>
     </form>
 </div>
 
 <script layout:fragment="script" type='text/javascript' th:inline="javascript">
+
     const Editor = toastui.Editor;
 
     const editor = new Editor({
@@ -35,13 +36,22 @@
         height: '600px',
         initialEditType: 'markdown',
         previewStyle: 'vertical',
-        initialValue: ""
-        // initialValue: document.getElementById("hiddenArea").innerText
+        initialValue:  /*[[ ${post.content} ]]*/ null
     });
 
     $("#form_post").on("submit", function () {
         $("#hiddenHtml").val(editor.getHTML());
         $("#hiddenMarkdown").val(editor.getMarkdown());
     })
+
+    // const delete_elements = document.getElementsByClassName("delete");
+    // Array.from(delete_elements).forEach(function(element) {
+    //     element.addEventListener('click', function() {
+    //         if(confirm("정말로 삭제하시겠습니까?")) {
+    //             location.href = this.dataset.uri;
+    //         };
+    //     });
+    // });
+
 </script>
 </html>
