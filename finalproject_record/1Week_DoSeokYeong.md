@@ -25,6 +25,11 @@
 
 ## 1주차 미션 요약
 ### 접근 방법
-- 수업시간에 주로 했봤던 내용들이거나 저번 아이디어톤에서도 해봤던 작업들 이었기 때문에 블로그보다는 예전 프로젝트 폴더들을 뒤져봤습니다.
+- 대부분은 스스로 만들었기 때문에 코드 완성도면에서 떨어질 수 있지만 최대한 직접 구현하고 진행이 막힐 때만 예전 코드를 참고했습니다.
+- 수업시간에 주로 했봤던 내용들이거나 저번 아이디어톤에서도 해봤던 작업들 이었기 때문에 블로그보다는 예전 프로젝트 폴더들을 찾아봤습니다.
+  - QueryDsl(https://github.com/jhs512/sb_qsl)
+  - 해시태그(https://github.com/jhs512/sb_exam_2022_09_05__app10)
+  - Toast Editor, layout(https://github.com/likelion-backendschool/Your_little_worries)
+- 비밀번호 찾기에서 이용했던 메일 서비스는 이번에 처음 해봤기 때문에 해당 블로그(https://kitty-geno.tistory.com/43) 참고했습니다.
 
 ### 특이사항
