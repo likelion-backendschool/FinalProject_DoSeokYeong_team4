@@ -35,9 +35,9 @@
 
 **진행 순서**
 1. **회원가입 및 회원가입 이메일 발송**
-- `validation`과 html에서도 required 이용하여 이중으로 공백 확인
+- `validation`과 html에서도 `required` 이용하여 이중으로 공백 확인
 - Unique 어노테이션을 이용하여 중복된 username을 사용한 회원 가입 방지
-  ```
+```
   @PostMapping("/join")
     public String doJoin(@Valid MemberCreateForm memberCreateForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -58,7 +58,41 @@
 
         return "redirect:/msg=joinSuccess";
     }
- ```
- - 닉네임 등록 유무에 따라 다른 권한을 부여하고 mailService를 통해 가입 축하 메일을 
+```
+- 닉네임 등록 유무에 따라 다른 권한을 부여하기 때문에 join 메소드를 오버로딩 하여 가입 처리 후 mailService를 통해 가입 축하 메일을 발송합니다.
+
+2. **시큐리티 로그인, 로그아웃**
+```
+.formLogin(
+                        formLogin -> formLogin
+                                .loginPage("/member/login")
+                                .defaultSuccessUrl("/?msg=success")
+                                .failureUrl("/?msg=loginfail")
+                                .usernameParameter("username")			// 아이디 파라미터명 설정
+                                .passwordParameter("password")			// 패스워드 파라미터명 설정
+                                .failureHandler(
+                                        new AuthenticationFailureHandler() {
+                                            @Override
+                                            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+                                                System.out.println("exception : " + exception.getMessage());
+                                                response.sendRedirect("/member/login");
+                                            }
+                                        }
+                                )
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/member/logout")
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
+                        .logoutSuccessUrl("/?msg=loggoutSuccess")
+                        .invalidateHttpSession(true) // 브라우저 종료시 로그인 정보 삭제
+                )
+```
+- 로그인 기능을 따로 구현하지 않고 요구사항에 맞게 스프링 시큐리티의 로그인, 로그아웃을 최대한 활용하였습니다.
+
+
+2. **시큐리티 로그인, 로그아웃**
 
 ### 특이사항
+**[Refactoring]**
+- 중복되는 코드가 눈에 보이고 이를 인지하고 있습니다. 시간적으로 촉박하여 메서드화 하지 않았으나 코드리뷰를 통하여 더 좋은 구조로 바꾸겠습니다.
+- 너무 과도한 db접근이 이루어지고 있다고 생각합니다. 효율적인 쿼리 또는 JPA 코드 변경을 통하여 수정해보겠습니다.
