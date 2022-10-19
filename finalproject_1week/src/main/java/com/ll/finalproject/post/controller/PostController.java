@@ -138,4 +138,23 @@ public class PostController {
 
         return String.format("redirect:/post/%d".formatted(post.getId()));
     }
+
+    @GetMapping("/{id}/delete")
+    @PreAuthorize("isAuthenticated()")
+    public String deletePost(@PathVariable("id") Long id, Principal principal) {
+        // 로그인 유저
+        Member member = memberService.findByUsername(principal.getName());
+
+        // 포스트
+        Post post = postService.findById(id);
+
+        // 작성자 아닐경우
+        if (post.getAuthorId() != member) {
+            return String.format("redirect:/post/%d?msg=%s".formatted(post.getId(), "작성자가 아닙니다."));
+        }
+
+        postService.deletePost(post);
+
+        return String.format("redirect:/post/list");
+    }
 }

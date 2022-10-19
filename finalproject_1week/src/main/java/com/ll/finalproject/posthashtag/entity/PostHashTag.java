@@ -28,6 +28,6 @@ public class PostHashTag extends BaseEntity {
     @ManyToOne
     private Post postId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private PostKeyword postKeyword;
 }

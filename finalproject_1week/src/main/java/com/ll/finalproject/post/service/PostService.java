@@ -3,6 +3,7 @@ package com.ll.finalproject.post.service;
 import com.ll.finalproject.member.Entity.Member;
 import com.ll.finalproject.post.entity.Post;
 import com.ll.finalproject.post.repository.PostRepository;
+import com.ll.finalproject.posthashtag.repository.PostHashTagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+    private final PostHashTagRepository postHashTagRepository;
 
     public List<Post> findAllPost() {
         List<Post> postList = postRepository.findAll();
@@ -46,5 +48,10 @@ public class PostService {
         postRepository.save(post);
 
         return post;
+    }
+
+    public void deletePost(Post post) {
+        postHashTagRepository.deleteAllByPostId(post);
+        postRepository.delete(post);
     }
 }
