@@ -43,8 +43,6 @@ public class PostController {
                            @RequestParam(defaultValue = "", value = "keyword") String keyword) {
         List<PostDto> postDtoList = new ArrayList<>();
 
-        System.out.println(keyword);
-
         if (principal == null || keyword.equals("")) {
             List<Post> postList = postService.findAllPost();
             for (Post post : postList) {

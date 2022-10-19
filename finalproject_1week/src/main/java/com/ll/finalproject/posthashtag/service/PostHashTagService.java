@@ -22,7 +22,7 @@ public class PostHashTagService {
     private final PostHashTagRepository postHashTagRepository;
 
     public void setPostHashTag(HashSet<String> keywordSet, Member member, Post post) {
-        System.out.println(keywordSet.toString());
+
         List<PostHashTag> oldHashTags = postHashTagRepository.findAllByPostId(post); // 기존 해시 태그들
 
         List<PostHashTag> needToDelete = new ArrayList<>();

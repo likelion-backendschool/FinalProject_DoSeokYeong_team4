@@ -19,7 +19,7 @@
             <td th:text="${#temporals.format(postDto.post.createDate, 'yyyy-MM-dd HH:mm')}"></td>
             <td th:text="${#temporals.format(postDto.post.updateDate, 'yyyy-MM-dd HH:mm')}"></td>
             <td th:each="postHashTag : ${postDto.postHashTagList}">
-                <a th:text="|#${postHashTag.postKeyword.content}|"></a>
+                <a th:href="@{|/post/list?keyword=${postHashTag.postKeyword.content}|}" th:text="|#${postHashTag.postKeyword.content}|"></a>
             </td>
         </tr>
     </table>
