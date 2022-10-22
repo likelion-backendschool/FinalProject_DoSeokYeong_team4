@@ -49,15 +49,6 @@ public class SecurityConfig {
                                 .failureUrl("/?msg=loginfail")
                                 .usernameParameter("username")			// 아이디 파라미터명 설정
                                 .passwordParameter("password")			// 패스워드 파라미터명 설정
-//                                .successHandler(
-//                                        new AuthenticationSuccessHandler() {
-//                                            @Override
-//                                            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-//                                                System.out.println("authentication : " + authentication.getName());
-//                                                response.sendRedirect("/"); // 인증이 성공한 후에는 root로 이동
-//                                            }
-//                                        }
-//                                )  // 로그인 성공 후 핸들러
                                 .failureHandler(
                                         new AuthenticationFailureHandler() {
                                             @Override

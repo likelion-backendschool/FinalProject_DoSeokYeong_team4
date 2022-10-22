@@ -23,6 +23,7 @@ public class Member extends BaseEntity {
 
     private String password; // 로그인 비밀번호
 
+    @Column(unique = true)
     private String nickname; // 필명
 
     private String email; // 이메일

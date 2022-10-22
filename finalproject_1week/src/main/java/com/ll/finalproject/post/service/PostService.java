@@ -58,7 +58,6 @@ public class PostService {
     }
 
     public void deletePost(Post post) {
-        postHashTagRepository.deleteAllByPostId(post);
         postRepository.delete(post);
     }
 

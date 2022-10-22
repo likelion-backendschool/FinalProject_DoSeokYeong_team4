@@ -98,20 +98,20 @@ public class PostController {
         Post post = postService.createPost(postCreateForm.getSubject(), postCreateForm.getContent(),
                 postCreateForm.getContentHtml(), member);
 
-        HashSet<String> keywordSet = Arrays.stream(keywords.split("#"))
-                .parallel().filter(s -> s.trim().length() > 0)
-                .map(String::trim)
-                .collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
-
-        postHashTagService.setPostHashTag(keywordSet, member, post);
+        postHashTagService.setPostHashTag(keywords, member, post);
 
         return String.format("redirect:/post/%d".formatted(post.getId()));
     }
 
     @GetMapping("/{id}/modify")
     @PreAuthorize("isAuthenticated()")
-    public String showModify(@PathVariable("id") Long id, Model model) {
+    public String showModify(@PathVariable("id") Long id, Model model, Principal principal) {
         Post post = postService.findById(id);
+
+        if (memberService.findByUsername(principal.getName()) != post.getAuthorId()) {
+            return "post/list";
+        }
+
         List<PostHashTag> postHashTagList = postHashTagService.findAllByPost(post);
         String postHashTags = "";
         for (PostHashTag postHashTag : postHashTagList) {
@@ -149,12 +149,7 @@ public class PostController {
         // 해시태그 목록
         String keywords = postCreateForm.getKeywords();
 
-        HashSet<String> keywordSet = Arrays.stream(keywords.split("#"))
-                .parallel().filter(s -> s.trim().length() > 0)
-                .map(String::trim)
-                .collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
-
-        postHashTagService.setPostHashTag(keywordSet, member, post);
+        postHashTagService.setPostHashTag(keywords, member, post);
 
         return String.format("redirect:/post/%d".formatted(post.getId()));
     }

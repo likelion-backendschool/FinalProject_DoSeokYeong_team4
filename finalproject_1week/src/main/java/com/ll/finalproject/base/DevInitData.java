@@ -37,21 +37,11 @@ public class DevInitData {
                     " > 666666666666666666", "<p>1111111111</p><h1>2222222222222222</h1><p><strong>33333333333333</strong></p><p><em>444444444444444</em></p><div contenteditable=\"false\"><hr></div><p>5555555555555555</p><blockquote><p>666666666666666666</p></blockquote>", member1);
             String keywords = "#자바 #스프링부트 #스프링배치";
 
-            HashSet<String> keywordSet = Arrays.stream(keywords.split("#"))
-                    .parallel().filter(s -> s.trim().length() > 0)
-                    .map(String::trim)
-                    .collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
-
-            postHashTagService.setPostHashTag(keywordSet, member1, post4);
+            postHashTagService.setPostHashTag(keywords, member1, post4);
 
             String keywords2 = "#자바 #스프링부트 #테스트 #확인";
 
-            HashSet<String> keywordSet2 = Arrays.stream(keywords2.split("#"))
-                    .parallel().filter(s -> s.trim().length() > 0)
-                    .map(String::trim)
-                    .collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
-
-            postHashTagService.setPostHashTag(keywordSet2, member1, post1);
+            postHashTagService.setPostHashTag(keywords2, member1, post1);
 
         };
     }

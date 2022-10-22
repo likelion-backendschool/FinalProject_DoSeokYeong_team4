@@ -10,9 +10,7 @@ import com.ll.finalproject.postkeyword.service.PostKeywordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -21,13 +19,18 @@ public class PostHashTagService {
     private final PostKeywordRepository postKeywordRepository;
     private final PostHashTagRepository postHashTagRepository;
 
-    public void setPostHashTag(HashSet<String> keywordSet, Member member, Post post) {
+    public void setPostHashTag(String keywords, Member member, Post post) {
+
+        HashSet<String> keywordSet = Arrays.stream(keywords.split("#"))
+                .parallel().filter(s -> s.trim().length() > 0)
+                .map(String::trim)
+                .collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
 
         List<PostHashTag> oldHashTags = postHashTagRepository.findAllByPostId(post); // 기존 해시 태그들
 
         List<PostHashTag> needToDelete = new ArrayList<>();
 
-        for (PostHashTag hashTag : oldHashTags) {
+        for (PostHashTag hashTag : oldHashTags) { // 기존 해시태그에서
 
             boolean contains = keywordSet.stream().anyMatch(s -> s.equals(hashTag.getPostKeyword().getContent()));
 
@@ -36,35 +39,29 @@ public class PostHashTagService {
             }
         }
 
-        keywordSet.forEach(keywordContent -> {
-            saveHashTag(post, keywordContent, member);
-        });
-
         needToDelete.forEach(hashTag -> {
             postHashTagRepository.delete(hashTag);
         });
 
-//        for (String keyword : keywordSet) {
-//            PostKeyword postKeyword = postKeywordRepository.findByContent(keyword).orElse(null);
-//            if (postKeyword == null) { // 없으면 만든다.
-//                postKeyword = postKeywordService.createPostKeywordService(keyword);
-//            }
-//            PostHashTag postHashTag = PostHashTag.builder()
-//                    .postId(post)
-//                    .memberId(member)
-//                    .postKeyword(postKeyword)
-//                    .build();
-//
-//            postHashTagRepository.save(postHashTag);
-//        }
+        keywordSet.forEach(keywordContent -> {
+            saveHashTag(post, keywordContent, member);
+        });
+
     }
 
-    private void saveHashTag(Post post, String keywordContent, Member member) {
+    private PostHashTag saveHashTag(Post post, String keywordContent, Member member) {
         PostKeyword postKeyword = postKeywordRepository.findByContent(keywordContent).orElse(null);
 
         if (postKeyword == null) { // 없으면 만든다.
             postKeyword = postKeywordService.createPostKeywordService(keywordContent);
         }
+
+        PostHashTag existPostHashTag = postHashTagRepository.findByPostIdAndPostKeyword(post, postKeyword);
+
+        if (existPostHashTag != null) {
+            return existPostHashTag;
+        }
+
         PostHashTag postHashTag = PostHashTag.builder()
                 .postId(post)
                 .memberId(member)
@@ -72,6 +69,8 @@ public class PostHashTagService {
                 .build();
 
         postHashTagRepository.save(postHashTag);
+
+        return postHashTag;
     }
 
     public List<PostHashTag> findAllByPost(Post post) {

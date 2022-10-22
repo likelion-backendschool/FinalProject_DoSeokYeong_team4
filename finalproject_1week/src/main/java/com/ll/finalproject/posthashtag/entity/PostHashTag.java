@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,8 +25,9 @@ public class PostHashTag extends BaseEntity {
     private Member memberId;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Post postId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private PostKeyword postKeyword;
 }

@@ -9,6 +9,7 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
 @Getter
@@ -24,6 +25,6 @@ public class Post extends BaseEntity {
 
     private String contentHtml; // 내용(토스트에디터의 렌더링 결과, HTML)
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member authorId;
 }
