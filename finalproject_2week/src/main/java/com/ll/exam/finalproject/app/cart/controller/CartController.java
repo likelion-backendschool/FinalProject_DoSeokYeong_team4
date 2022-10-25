@@ -29,6 +29,7 @@ public class CartController {
     private final Rq rq;
 
     @GetMapping("/list")
+    @PreAuthorize("isAuthenticated()")
     public String showCartList(Model model) {
         Member member = rq.getMember();
 
@@ -47,13 +48,13 @@ public class CartController {
 
         CartItem cartItem = cartService.addItem(member, product);
 
-        return rq.redirectWithMsg("/cart/list", "품목이 추가됐습니다");
+        return rq.redirectWithMsg("/product/list", "품목이 추가됐습니다");
     }
 
     @PostMapping("/remove/{productId}")
     @PreAuthorize("isAuthenticated()")
     public String remove(@PathVariable long productId) {
-        CartItem cartItem = cartService.findById(productId).orElse(null);
+        CartItem cartItem = cartService.findByMemberIdAndProductId(rq.getMember().getId(), productId).orElse(null);
 
         cartService.deleteItem(cartItem);
         return rq.redirectWithMsg("/cart/list", "품목이 삭제됐습니다");

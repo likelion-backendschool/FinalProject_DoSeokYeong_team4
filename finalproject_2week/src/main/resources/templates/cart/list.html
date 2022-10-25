@@ -7,12 +7,20 @@
 
 <body>
 <main layout:fragment="main">
-    <section class="section section-post-list container mx-auto">
+
+    <section th:unless="${cartItemList != null && cartItemList.size > 0}"
+             class="section section-post-list flex-grow flex items-center justify-center">
+        <div>
+            <div>장바구니에 상품이 존재하지 않습니다.</div>
+        </div>
+    </section>
+
+    <section th:if="${cartItemList != null && cartItemList.size > 0}" class="section section-post-list container mx-auto">
 
         <div class="px-2 pt-4">
             <h1 class="font-bold text-lg">
-                <i class="fa-solid fa-rectangle-list"></i>
-                글 목록
+                <i class="fa-solid fa-book"></i>
+                도서 목록
             </h1>
 
             <div class="mt-2">

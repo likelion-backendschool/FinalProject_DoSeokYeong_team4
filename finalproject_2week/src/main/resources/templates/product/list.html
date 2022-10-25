@@ -24,7 +24,21 @@
             </div>
         </div>
     </section>
-
+    <script th:inline="javascript" type='text/javascript'>
+        function addCart(__input) {
+            const product = __input;
+            console.log(product.dataset.uri);
+            fetch(product.dataset.uri,{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "productId": product.id
+                })
+            })
+        }
+    </script>
 </main>
 </body>
 </html>

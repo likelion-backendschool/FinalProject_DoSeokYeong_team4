@@ -37,15 +37,17 @@
                 </div>
             </div>
             <div class="card-actions justify-end">
-                <a th:href class="btn btn-sm">
-                    <i class="fa-solid fa-cart-plus"></i>
-                    <span class="ml-2">장바구니</span>
-                </a>
-
-                <a th:href="@{|/product/${product.id}|}" class="btn btn-sm">
+                <a th:href="@{|/product/${cartItem.product.id}|}" class="btn btn-sm">
                     <i class="fa-solid fa-eye"></i>
                     <span class="ml-2">보기</span>
                 </a>
+                <a href="javascript:;"
+                   onclick="if ( confirm('정말로 삭제하시겠습니까?') ) $(this).next().submit();"
+                   class="btn btn-secondary btn-sm btn-outline">
+                    <i class="fa-solid fa-trash"></i>
+                    <span class="ml-1">삭제</span>
+                </a>
+                <form th:action="@{|/cart/remove/${cartItem.product.id}|}" method="post"></form>
             </div>
         </div>
     </div>

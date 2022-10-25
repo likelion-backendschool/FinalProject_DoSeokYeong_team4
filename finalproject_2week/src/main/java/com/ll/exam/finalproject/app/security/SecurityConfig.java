@@ -19,9 +19,12 @@ public class SecurityConfig {
     private final AuthenticationSuccessHandler authenticationSuccessHandler;
     private final AuthenticationFailureHandler authenticationFailureHandler;
 
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors().and().csrf().disable()
                 .formLogin(
                         formLogin -> formLogin
                                 .loginPage("/member/login") // GET

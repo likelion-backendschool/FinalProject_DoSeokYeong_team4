@@ -39,8 +39,8 @@ public class CartService {
         cartRepository.delete(cartItem);
     }
 
-    public Optional<CartItem> findById(long productId) {
-        return cartRepository.findById(productId);
+    public Optional<CartItem> findByMemberIdAndProductId(long memberId, long productId) {
+        return cartRepository.findByMemberIdAndProductId(memberId, productId);
     }
 
     public List<CartItem> findByMemberId(Long memberId) {
