@@ -1,6 +1,6 @@
-package com.ll.exam.finalproject.orderitem.repository;
+package com.ll.exam.finalproject.app.orderitem.repository;
 
-import com.ll.exam.finalproject.orderitem.entity.OrderItem;
+import com.ll.exam.finalproject.app.orderitem.entity.OrderItem;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

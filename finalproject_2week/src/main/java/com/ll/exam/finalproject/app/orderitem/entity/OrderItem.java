@@ -1,8 +1,8 @@
-package com.ll.exam.finalproject.orderitem.entity;
+package com.ll.exam.finalproject.app.orderitem.entity;
 
 import com.ll.exam.finalproject.app.base.entity.BaseEntity;
 import com.ll.exam.finalproject.app.product.entity.Product;
-import com.ll.exam.finalproject.order.entity.Order;
+import com.ll.exam.finalproject.app.order.entity.Order;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -1,13 +1,13 @@
-package com.ll.exam.finalproject.order.service;
+package com.ll.exam.finalproject.app.order.service;
 
 import com.ll.exam.finalproject.app.cart.entity.CartItem;
 import com.ll.exam.finalproject.app.cart.service.CartService;
 import com.ll.exam.finalproject.app.member.entity.Member;
 import com.ll.exam.finalproject.app.member.service.MemberService;
+import com.ll.exam.finalproject.app.order.repository.OrderRepository;
 import com.ll.exam.finalproject.app.product.entity.Product;
-import com.ll.exam.finalproject.order.entity.Order;
-import com.ll.exam.finalproject.order.repository.OrderRepository;
-import com.ll.exam.finalproject.orderitem.entity.OrderItem;
+import com.ll.exam.finalproject.app.order.entity.Order;
+import com.ll.exam.finalproject.app.orderitem.entity.OrderItem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,8 +1,8 @@
-package com.ll.exam.finalproject.order.entity;
+package com.ll.exam.finalproject.app.order.entity;
 
 import com.ll.exam.finalproject.app.base.entity.BaseEntity;
 import com.ll.exam.finalproject.app.member.entity.Member;
-import com.ll.exam.finalproject.orderitem.entity.OrderItem;
+import com.ll.exam.finalproject.app.orderitem.entity.OrderItem;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

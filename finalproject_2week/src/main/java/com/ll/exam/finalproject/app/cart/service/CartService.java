@@ -4,7 +4,6 @@ import com.ll.exam.finalproject.app.cart.entity.CartItem;
 import com.ll.exam.finalproject.app.cart.repository.CartRepository;
 import com.ll.exam.finalproject.app.member.entity.Member;
 import com.ll.exam.finalproject.app.product.entity.Product;
-import com.ll.exam.finalproject.orderitem.entity.OrderItem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
