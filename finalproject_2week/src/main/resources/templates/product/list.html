@@ -29,6 +29,10 @@
         const token = document.getElementById('csrf_token');
 
         function addCart(__input) {
+            if ([[${@rq.member}]] == null) {
+                const link = "/member/login";
+                location.href = link;
+            }
             const product = __input;
 
             fetch(product.dataset.uri, {
@@ -43,7 +47,7 @@
             })
                 .then(res => res.json())
                 .then(data => {
-                    successModal(data.result)
+                        successModal(data.result);
                 })
         }
     </script>

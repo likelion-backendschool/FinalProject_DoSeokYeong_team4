@@ -23,7 +23,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Setter
 @SuperBuilder
 @ToString(callSuper = true)
-@NoArgsConstructor(access = PROTECTED)
+@NoArgsConstructor
 public class Order extends BaseEntity {
 
     @ManyToOne(fetch = LAZY)
@@ -65,5 +65,20 @@ public class Order extends BaseEntity {
         for (OrderItem orderItem : orderItems) {
             orderItem.setPaymentDone();
         }
+    }
+
+    public void setRefundDone() {
+        for (OrderItem orderItem : orderItems) {
+            orderItem.setRefundDone();
+        }
+    }
+
+    public int getPayPrice() {
+        int payPrice = 0;
+        for (OrderItem orderItem : orderItems) {
+            payPrice += orderItem.getPayPrice();
+        }
+
+        return payPrice;
     }
 }

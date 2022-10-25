@@ -22,7 +22,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Setter
 @SuperBuilder
 @ToString(callSuper = true)
-@NoArgsConstructor(access = PROTECTED)
+@NoArgsConstructor
 public class OrderItem extends BaseEntity {
 
     @ManyToOne(fetch = LAZY)

@@ -34,7 +34,6 @@ public class OrderService {
 
             if (productOption.isOrderable()) {
                 orderItems.add(new OrderItem(productOption));
-
             }
 
             cartService.deleteItem(cartItem);
@@ -74,4 +73,11 @@ public class OrderService {
         orderRepository.save(order);
     }
 
+    public List<Order> findByMemberId(Member member) {
+        return orderRepository.findByMemberId(member);
+    }
+
+    public Order findById(long id) {
+        return orderRepository.findById(id).orElse(null);
+    }
 }
