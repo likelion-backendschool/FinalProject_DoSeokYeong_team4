@@ -6,17 +6,13 @@ import com.ll.exam.finalproject.app.orderitem.entity.OrderItem;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
-import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
@@ -24,6 +20,7 @@ import static lombok.AccessLevel.PROTECTED;
 @SuperBuilder
 @ToString(callSuper = true)
 @NoArgsConstructor
+@Table(name = "product_order")
 public class Order extends BaseEntity {
 
     @ManyToOne(fetch = LAZY)
