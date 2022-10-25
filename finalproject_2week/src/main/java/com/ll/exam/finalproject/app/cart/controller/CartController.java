@@ -12,12 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -42,13 +40,12 @@ public class CartController {
 
     @PostMapping("/add/{productId}")
     @PreAuthorize("isAuthenticated()")
-    public String add(@PathVariable long productId) {
+    @ResponseBody
+    public Map<String, String> add(@PathVariable long productId) {
         Member member = rq.getMember();
         Product product = productService.findById(productId).get();
 
-        CartItem cartItem = cartService.addItem(member, product);
-
-        return rq.redirectWithMsg("/product/list", "품목이 추가됐습니다");
+        return cartService.addItem(member, product);
     }
 
     @PostMapping("/remove/{productId}")

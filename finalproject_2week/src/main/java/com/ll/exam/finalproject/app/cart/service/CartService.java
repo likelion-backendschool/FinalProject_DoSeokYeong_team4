@@ -8,7 +8,9 @@ import com.ll.exam.finalproject.orderitem.entity.OrderItem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -16,13 +18,16 @@ import java.util.Optional;
 public class CartService {
     private final CartRepository cartRepository;
 
-    public CartItem addItem(Member member, Product productOption) {
+    public Map<String, String> addItem(Member member, Product productOption) {
+        Map<String, String> result = new HashMap<>();
+
         CartItem oldCartItem = cartRepository.findByMemberIdAndProductId(member.getId(), productOption.getId()).orElse(null);
 
-        if ( oldCartItem != null ) {
+        if (oldCartItem != null) {
             cartRepository.save(oldCartItem);
 
-            return oldCartItem;
+            result.put("result", "이미 장바구니에 존재합니다.");
+            return result;
         }
 
         CartItem cartItem = CartItem.builder()
@@ -32,7 +37,8 @@ public class CartService {
 
         cartRepository.save(cartItem);
 
-        return cartItem;
+        result.put("result", "장바구니에 추가됐습니다.");
+        return result;
     }
 
     public void deleteItem(CartItem cartItem) {
