@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout.html}">
+
+<head>
+    <title>주문 정보</title>
+</head>
+
+<body>
+<main layout:fragment="main">
+    <section class="section section-write container mx-auto">
+
+        <div class="px-2 pt-4">
+            <h1 class="font-bold text-lg">
+                <i class="fa-solid fa-book-open"></i>
+                주문 정보
+            </h1>
+
+            <div class="flex flex-col mt-2 gap-3">
+                <div>
+                    <h2 class="font-bold" th:text="$|{order.id}번 주문|"></h2>
+                </div>
+
+                <div class="flex">
+                    <svg width="20" height="20" th:data-jdenticon-value="${order.member.jdenticon}"></svg>
+                    <div th:text="|요청자 : ${order.member.name}|"></div>
+                </div>
+
+                <div th:text="|￦ ${order.calculatePayPrice}|"></div>
+
+                <div>
+
+                    <a th:if="${@orderService.actorCanRemove(@rq.member, order)}" href="javascript:;"
+                       onclick="if ( confirm('정말로 삭제하시겠습니까?') ) $(this).next().submit();"
+                       class="btn btn-secondary btn-sm btn-outline">
+                        <i class="fa-solid fa-trash"></i>
+                        <span class="ml-1">삭제</span>
+                    </a>
+                    <form th:action="@{|/order/${order.id}/cancel|}" method="post" hidden></form>
+
+                </div>
+
+                <div class="flex justify-center">
+                    <svg width="200" height="200" th:data-jdenticon-value="${product.jdenticon}"></svg>
+                </div>
+
+            </div>
+
+
+        </div>
+    </section>
+
+</main>
+</body>
+</html>

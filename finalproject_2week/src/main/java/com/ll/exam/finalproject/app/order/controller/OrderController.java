@@ -45,4 +45,12 @@ public class OrderController {
         return "order/detail";
     }
 
+    @PostMapping("/{id}/cancel")
+    public String orderCancel(@PathVariable long id) { // 주문 생성
+        Order order = orderService.findById(id);
+        orderService.deleteOrder(order);
+
+        return String.format("redirect:/order/list");
+    }
+
 }

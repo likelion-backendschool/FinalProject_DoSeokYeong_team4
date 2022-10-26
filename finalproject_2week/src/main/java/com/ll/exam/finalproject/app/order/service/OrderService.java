@@ -80,4 +80,18 @@ public class OrderService {
     public Order findById(long id) {
         return orderRepository.findById(id).orElse(null);
     }
+
+    public void deleteOrder(Order order) {
+        orderRepository.delete(order);
+    }
+
+    public boolean actorCanModify(Member actor, Order order) {
+        if (actor == null) return false;
+
+        return actor.getId().equals(order.getMember().getId());
+    }
+
+    public boolean actorCanRemove(Member actor, Order order) {
+        return actorCanModify(actor, order);
+    }
 }
