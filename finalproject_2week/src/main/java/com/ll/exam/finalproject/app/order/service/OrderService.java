@@ -95,4 +95,29 @@ public class OrderService {
     public boolean actorCanRemove(Member actor, Order order) {
         return actorCanModify(actor, order);
     }
+
+    public boolean actorCanSee(Member actor, Order order) {
+        return actor.getId().equals(order.getMember().getId());
+    }
+
+    public boolean actorCanPayment(Member actor, Order order) {
+        return actorCanSee(actor, order);
+    }
+
+    @Transactional
+    public void payByTossPayments(Order order, long useRestCash) {
+        Member buyer = order.getMember();
+        int payPrice = order.calculatePayPrice();
+
+        long pgPayPrice = payPrice - useRestCash;
+        memberService.addCash(buyer, pgPayPrice, "주문__%d__충전__토스페이먼츠".formatted(order.getId()));
+        memberService.addCash(buyer, pgPayPrice * -1, "주문__%d__사용__토스페이먼츠".formatted(order.getId()));
+
+        if ( useRestCash > 0 ) {
+            memberService.addCash(buyer, useRestCash * -1, "주문__%d__사용__예치금".formatted(order.getId()));
+        }
+
+        order.setPaymentDone(order);
+        orderRepository.save(order);
+    }
 }

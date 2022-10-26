@@ -73,6 +73,8 @@ public class NotProdInitData {
 
             cartService.addItem(member1, product1);
             cartService.addItem(member1, product2);
+
+            member1.setRestCash(10000000); // 멤버1 예치금 1천만 설정
         };
     }
 }

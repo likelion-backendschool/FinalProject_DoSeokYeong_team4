@@ -7,6 +7,16 @@
 
 <body>
 <main layout:fragment="main">
+    <script src="https://js.tosspayments.com/v1/payment"></script>
+    <script th:inline="javascript">
+        const orderId = /*[[ ${order.id} ]]*/ null;
+        const buyerName = /*[[ ${order.member.username} ]]*/ null;
+        const orderName = /*[[ ${order.name} ]]*/ null;
+        const orderPayPrice = /*[[ ${order.calculatePayPrice} ]]*/ null;
+    </script>
+
+    <form hidden name="payByRestCashOnlyForm" method="POST" th:action="@{|/order/${order.id}/pay|}">
+    </form>
     <section class="section section-write container mx-auto">
 
         <div class="px-2 pt-4">
@@ -19,6 +29,8 @@
                 <div>
                     <h2 class="font-bold" th:text="|${order.id}번 주문|"></h2>
                 </div>
+
+                <div th:text="${#temporals.format(order.createDate, 'yy-MM-dd HH:mm')}"></div>
 
                 <div class="flex">
                     <svg width="20" height="20" th:data-jdenticon-value="${order.member.jdenticon}"></svg>
@@ -34,7 +46,6 @@
                 <div th:text="|합계 : ￦ ${order.calculatePayPrice}|"></div>
 
                 <div>
-
                     <a th:if="${@orderService.actorCanRemove(@rq.member, order)}" href="javascript:;"
                        onclick="if ( confirm('정말로 삭제하시겠습니까?') ) $(this).next().submit();"
                        class="btn btn-secondary btn-sm btn-outline">
@@ -43,6 +54,12 @@
                     </a>
                     <form th:action="@{|/order/${order.id}/cancel|}" method="post" hidden></form>
 
+                    <button id="payment-button">결제하기</button>
+                    <button onclick="payment();" class="btn btn-sm btn-primary">카드결제</button>
+                    <span th:if="${order.isPaid}">결제완료</span>
+
+                    <input type="number" id="PaymentForm__useRestCash"
+                           th:value="${@rq.member.getRestCash()}"/>
                 </div>
 
             </div>
@@ -50,7 +67,35 @@
 
         </div>
     </section>
-
 </main>
+<script>
+
+    var tossPayments = TossPayments("test_ck_XjExPeJWYVQDx5XxJOQ349R5gvNL");
+
+    const $PaymentForm__useRestCash = $("#PaymentForm__useRestCash");
+
+    function payment() {
+        let useRestCash = parseInt($PaymentForm__useRestCash.val());
+
+        if (orderPayPrice == useRestCash) {
+            document.payByRestCashOnlyForm.submit();
+            return;
+        }
+
+        const method = "카드"; // "카드" 혹은 "가상계좌"
+
+        const paymentData = {
+            amount: orderPayPrice - useRestCash,
+            orderId: "order__" + orderId + "__" + (Math.random() + "").substring(2),
+            orderName : "결제",
+            customerName: buyerName,
+            successUrl: window.location.origin + "/order/" + orderId + "/success",
+            failUrl: window.location.origin + "/order/" + orderId + "/fail"
+        };
+
+        tossPayments.requestPayment(method, paymentData);
+    }
+
+</script>
 </body>
 </html>
