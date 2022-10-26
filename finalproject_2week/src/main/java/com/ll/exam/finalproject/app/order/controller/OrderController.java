@@ -7,10 +7,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -48,9 +50,10 @@ public class OrderController {
     @PostMapping("/{id}/cancel")
     public String orderCancel(@PathVariable long id) { // 주문 생성
         Order order = orderService.findById(id);
+
         orderService.deleteOrder(order);
 
-        return String.format("redirect:/order/list");
+        return rq.redirectWithMsg("/order/list", "주문이 취소됐습니다");
     }
 
 }

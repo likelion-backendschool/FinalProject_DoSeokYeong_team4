@@ -5,9 +5,10 @@ import com.ll.exam.finalproject.app.member.entity.Member;
 import com.ll.exam.finalproject.app.orderitem.entity.OrderItem;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +19,13 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 @Setter
 @SuperBuilder
-@ToString(callSuper = true)
 @NoArgsConstructor
 @Table(name = "product_order")
 public class Order extends BaseEntity {
 
     @ManyToOne(fetch = LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ToString.Exclude
     private Member member;
 
     private LocalDateTime payDate; // 결제 날짜
@@ -39,6 +41,7 @@ public class Order extends BaseEntity {
     private String name; // 주문 명
 
     @Builder.Default
+    @ToString.Exclude
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 

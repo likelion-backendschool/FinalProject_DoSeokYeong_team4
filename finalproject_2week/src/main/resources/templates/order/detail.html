@@ -17,7 +17,7 @@
 
             <div class="flex flex-col mt-2 gap-3">
                 <div>
-                    <h2 class="font-bold" th:text="$|{order.id}번 주문|"></h2>
+                    <h2 class="font-bold" th:text="|${order.id}번 주문|"></h2>
                 </div>
 
                 <div class="flex">
@@ -25,7 +25,13 @@
                     <div th:text="|요청자 : ${order.member.name}|"></div>
                 </div>
 
-                <div th:text="|￦ ${order.calculatePayPrice}|"></div>
+                <tr th:each="orderItems : ${order.orderItems}">
+                    <div th:text="|상품명 : ${orderItems.product.subject}|"></div>
+                    <div th:text="|금액 : ${orderItems.product.price}|"></div>
+                    <hr/>
+                </tr>
+
+                <div th:text="|합계 : ￦ ${order.calculatePayPrice}|"></div>
 
                 <div>
 
@@ -37,10 +43,6 @@
                     </a>
                     <form th:action="@{|/order/${order.id}/cancel|}" method="post" hidden></form>
 
-                </div>
-
-                <div class="flex justify-center">
-                    <svg width="200" height="200" th:data-jdenticon-value="${product.jdenticon}"></svg>
                 </div>
 
             </div>

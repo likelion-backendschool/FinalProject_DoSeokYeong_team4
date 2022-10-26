@@ -1,8 +1,8 @@
 package com.ll.exam.finalproject.app.orderitem.entity;
 
 import com.ll.exam.finalproject.app.base.entity.BaseEntity;
-import com.ll.exam.finalproject.app.product.entity.Product;
 import com.ll.exam.finalproject.app.order.entity.Order;
+import com.ll.exam.finalproject.app.product.entity.Product;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,11 +11,9 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-
 import java.time.LocalDateTime;
 
 import static javax.persistence.FetchType.LAZY;
-import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter

@@ -1,6 +1,5 @@
 package com.ll.exam.finalproject.app.cart.controller;
 
-import com.ll.exam.finalproject.app.base.dto.RsData;
 import com.ll.exam.finalproject.app.base.rq.Rq;
 import com.ll.exam.finalproject.app.cart.entity.CartItem;
 import com.ll.exam.finalproject.app.cart.service.CartService;

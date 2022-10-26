@@ -4,10 +4,10 @@ import com.ll.exam.finalproject.app.cart.entity.CartItem;
 import com.ll.exam.finalproject.app.cart.service.CartService;
 import com.ll.exam.finalproject.app.member.entity.Member;
 import com.ll.exam.finalproject.app.member.service.MemberService;
-import com.ll.exam.finalproject.app.order.repository.OrderRepository;
-import com.ll.exam.finalproject.app.product.entity.Product;
 import com.ll.exam.finalproject.app.order.entity.Order;
+import com.ll.exam.finalproject.app.order.repository.OrderRepository;
 import com.ll.exam.finalproject.app.orderitem.entity.OrderItem;
+import com.ll.exam.finalproject.app.product.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,9 +78,10 @@ public class OrderService {
     }
 
     public Order findById(long id) {
-        return orderRepository.findById(id).orElse(null);
+        return orderRepository.findById(id).get();
     }
 
+    @Transactional
     public void deleteOrder(Order order) {
         orderRepository.delete(order);
     }

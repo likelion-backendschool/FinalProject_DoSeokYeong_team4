@@ -1,6 +1,5 @@
 package com.ll.exam.finalproject.app.base.initData;
 
-import com.ll.exam.finalproject.app.cart.entity.CartItem;
 import com.ll.exam.finalproject.app.cart.service.CartService;
 import com.ll.exam.finalproject.app.member.entity.Member;
 import com.ll.exam.finalproject.app.member.service.MemberService;
