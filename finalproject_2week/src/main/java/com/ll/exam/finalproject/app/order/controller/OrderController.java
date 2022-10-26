@@ -21,17 +21,15 @@ public class OrderController {
     private final Rq rq;
 
     @PostMapping("/create")
-    @ResponseBody
     public String orderCreate() { // 주문 생성
         Order order = orderService.createFromCart(rq.getMember());
 
-        return "성공";
-//        return String.format("redirect:/order/%d", order.getId());
+        return String.format("redirect:/order/list");
     }
 
     @GetMapping("/list")
     public String showOrderList(Model model) { // 주문리스트
-        List<Order> orderList = orderService.findByMemberId(rq.getMember());
+        List<Order> orderList = orderService.findAllByMemberId(rq.getMember().getId());
 
         model.addAttribute("orderList", orderList);
 

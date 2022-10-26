@@ -73,8 +73,8 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public List<Order> findByMemberId(Member member) {
-        return orderRepository.findByMemberId(member);
+    public List<Order> findAllByMemberId(long memberId) {
+        return orderRepository.findAllByMemberId(memberId);
     }
 
     public Order findById(long id) {
