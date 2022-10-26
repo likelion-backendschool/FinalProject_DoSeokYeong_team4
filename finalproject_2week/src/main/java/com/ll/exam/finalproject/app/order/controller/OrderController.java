@@ -7,11 +7,15 @@ import com.ll.exam.finalproject.app.base.exception.OrderIdNotMatchedException;
 import com.ll.exam.finalproject.app.base.exception.OrderNotEnoughRestCashException;
 import com.ll.exam.finalproject.app.base.rq.Rq;
 import com.ll.exam.finalproject.app.member.entity.Member;
+import com.ll.exam.finalproject.app.member.service.MemberService;
+import com.ll.exam.finalproject.app.mybook.service.MyBookService;
 import com.ll.exam.finalproject.app.order.entity.Order;
 import com.ll.exam.finalproject.app.order.service.OrderService;
 import com.ll.exam.finalproject.util.Ut;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.*;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,15 +35,19 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/order")
 @PreAuthorize("isAuthenticated()")
+@Profile("base-addi")
 public class OrderController {
     private final OrderService orderService;
+    private final MemberService memberService;
+    private final MyBookService myBookService;
     private final Rq rq;
     private final RestTemplate restTemplate = new RestTemplate();
-
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+//    private final String SECRET_KEY = "test_sk_D4yKeq5bgrpxPylPpbxrGX0lzW6Y";
+
     @Value("${custom.toss.secretKey}")
-    private final String SECRET_KEY;
+    private String SECRET_KEY;
 
     @PostConstruct
     private void init() {
@@ -95,7 +103,7 @@ public class OrderController {
 
         Member member = rq.getMember();
 
-        long restCash = member.getRestCash(); // RestCash 반환 필요
+        long restCash = memberService.getRestCash(member); // RestCash 반환 필요
 
         if (orderService.actorCanPayment(member, order) == false) {
             throw new ActorCanNotPayOrderException();
@@ -148,6 +156,7 @@ public class OrderController {
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
 
             orderService.payByTossPayments(order, payPriceRestCash);
+            myBookService.createMyBook(order);
 
             return "redirect:/order/%d?msg=%s".formatted(order.getId(), Ut.url.encode("결제가 완료되었습니다."));
         } else {

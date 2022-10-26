@@ -8,7 +8,9 @@
         <span th:text="|주문명 : ${order.name}|"></span>
         <div class="badge badge-primary"
              th:text="|생성날짜 : ${#temporals.format(order.createDate, 'yy-MM-dd HH:mm')}|"></div>
-
+        <span th:if="${order.isPaid}">
+            결제완료
+        </span>
         <a th:if="${@orderService.actorCanRemove(@rq.member, order)}" href="javascript:;"
            onclick="if ( confirm('정말로 삭제하시겠습니까?') ) $(this).next().submit();"
            class="btn btn-secondary btn-sm btn-outline">

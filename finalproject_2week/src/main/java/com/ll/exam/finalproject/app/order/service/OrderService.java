@@ -57,9 +57,10 @@ public class OrderService {
         return order;
     }
 
+    @Transactional
     public void payByRestCashOnly(Order order) {
         Member member = order.getMember();
-        long restCash = member.getRestCash();
+        long restCash = memberService.getRestCash(member);
 
         int payPrice = order.calculatePayPrice();
 
@@ -93,6 +94,10 @@ public class OrderService {
     }
 
     public boolean actorCanRemove(Member actor, Order order) {
+        if (order.isPaid()) {
+            return false;
+        }
+
         return actorCanModify(actor, order);
     }
 

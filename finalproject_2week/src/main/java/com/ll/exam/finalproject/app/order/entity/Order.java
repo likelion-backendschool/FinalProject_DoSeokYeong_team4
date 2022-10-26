@@ -65,6 +65,7 @@ public class Order extends BaseEntity {
         for (OrderItem orderItem : orderItems) {
             orderItem.setPaymentDone();
         }
+        order.setPaid(true);
     }
 
     public void setRefundDone() {

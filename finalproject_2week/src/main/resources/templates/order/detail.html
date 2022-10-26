@@ -8,6 +8,7 @@
 <body>
 <main layout:fragment="main">
     <script src="https://js.tosspayments.com/v1/payment"></script>
+
     <script th:inline="javascript">
         const orderId = /*[[ ${order.id} ]]*/ null;
         const buyerName = /*[[ ${order.member.username} ]]*/ null;
@@ -17,6 +18,7 @@
 
     <form hidden name="payByRestCashOnlyForm" method="POST" th:action="@{|/order/${order.id}/pay|}">
     </form>
+
     <section class="section section-write container mx-auto">
 
         <div class="px-2 pt-4">
@@ -53,13 +55,30 @@
                         <span class="ml-1">삭제</span>
                     </a>
                     <form th:action="@{|/order/${order.id}/cancel|}" method="post" hidden></form>
+                    <div th:if="${@orderService.actorCanRemove(@rq.member, order)}">
+                        <div th:with="maxUseRestCash = ${order.calculatePayPrice > @memberService.getRestCash(@rq.member) ? @memberService.getRestCash(@rq.member) : order.calculatePayPrice}">
+                            <span>사용할 예치금 : </span>
+                            <input type="number" id="PaymentForm__useRestCash"
+                                   th:placeholder="|0 ~ ${maxUseRestCash}|"
+                                   class="input input-bordered min-w-[300px]" min="0" th:max="${maxUseRestCash}"
+                                   onkeydown="PaymentForm__useRestCashFix();"
+                                   onkeyup="PaymentForm__useRestCashFix();"
+                            >
+                            <label class="inline-flex items-center ml-3">
+                                <span>전액사용</span>
+                                <input onchange="PaymentForm__useRestCashAllChanged();" id="PaymentForm__useRestCashAll"
+                                       type="checkbox" class="ml-2 checkbox">
+                            </label>
+                        </div>
+                        <button onclick="payment();" class="btn btn-sm btn-primary">카드결제</button>
+                        <span th:if="${order.isPaid}">결제완료</span>
+                        <div>
+                            <span>PG결제가격 : </span>
+                            <span id="PaymentForm__pgPayPriceDisplay">
 
-                    <button id="payment-button">결제하기</button>
-                    <button onclick="payment();" class="btn btn-sm btn-primary">카드결제</button>
-                    <span th:if="${order.isPaid}">결제완료</span>
-
-                    <input type="number" id="PaymentForm__useRestCash"
-                           th:value="${@rq.member.getRestCash()}"/>
+                        </span>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -67,35 +86,80 @@
 
         </div>
     </section>
-</main>
-<script>
 
-    var tossPayments = TossPayments("test_ck_XjExPeJWYVQDx5XxJOQ349R5gvNL");
+    <script>
+        var tossPayments = TossPayments("test_ck_XjExPeJWYVQDx5XxJOQ349R5gvNL");
 
-    const $PaymentForm__useRestCash = $("#PaymentForm__useRestCash");
+        const $PaymentForm__useRestCash = $("#PaymentForm__useRestCash");
+        const $PaymentForm__useRestCashAll = $("#PaymentForm__useRestCashAll");
+        const $PaymentForm__pgPayPriceDisplay = $("#PaymentForm__pgPayPriceDisplay");
 
-    function payment() {
-        let useRestCash = parseInt($PaymentForm__useRestCash.val());
+        function payment() {
 
-        if (orderPayPrice == useRestCash) {
-            document.payByRestCashOnlyForm.submit();
-            return;
+            let useRestCash = parseInt($PaymentForm__useRestCash.val());
+
+            if (orderPayPrice == useRestCash) {
+                document.payByRestCashOnlyForm.submit();
+                return;
+            }
+
+            const method = "카드"; // "카드" 혹은 "가상계좌"
+
+            const paymentData = {
+                amount: orderPayPrice - useRestCash,
+                orderId: "order__" + orderId + "__" + (Math.random() + "").substring(2),
+                orderName : "결제",
+                customerName: buyerName,
+                successUrl: window.location.origin + "/order/" + orderId + "/success",
+                failUrl: window.location.origin + "/order/" + orderId + "/fail"
+            };
+
+            tossPayments.requestPayment(method, paymentData);
+        }
+    </script>
+
+    <script>
+        function PaymentForm__useRestCashFix() {
+            let useRestCash = parseInt($PaymentForm__useRestCash.val());
+
+            if (isNaN(useRestCash)) {
+                useRestCash = 0;
+            }
+
+            const maxUseRestCash = parseInt($PaymentForm__useRestCash.attr('max'));
+
+            if (useRestCash > maxUseRestCash) {
+                useRestCash = maxUseRestCash;
+                $PaymentForm__useRestCash.val(maxUseRestCash);
+            }
+
+            if ( useRestCash == maxUseRestCash ) {
+                $PaymentForm__useRestCashAll.prop('checked', true);
+            }
+            else {
+                $PaymentForm__useRestCashAll.prop('checked', false);
+            }
+
+            const pgPayPrice = orderPayPrice - useRestCash;
+
+            $PaymentForm__pgPayPriceDisplay.text(pgPayPrice);
         }
 
-        const method = "카드"; // "카드" 혹은 "가상계좌"
+        function PaymentForm__useRestCashAllChanged() {
+            if ( $PaymentForm__useRestCashAll.prop('checked') ) {
+                const maxUseRestCash = parseInt($PaymentForm__useRestCash.attr('max'));
+                $PaymentForm__useRestCash.val(maxUseRestCash);
+            }
+            else {
+                $PaymentForm__useRestCash.val(0);
+            }
 
-        const paymentData = {
-            amount: orderPayPrice - useRestCash,
-            orderId: "order__" + orderId + "__" + (Math.random() + "").substring(2),
-            orderName : "결제",
-            customerName: buyerName,
-            successUrl: window.location.origin + "/order/" + orderId + "/success",
-            failUrl: window.location.origin + "/order/" + orderId + "/fail"
-        };
+            PaymentForm__useRestCashFix();
+        }
 
-        tossPayments.requestPayment(method, paymentData);
-    }
+        PaymentForm__useRestCashFix();
+    </script>
 
-</script>
+</main>
 </body>
 </html>

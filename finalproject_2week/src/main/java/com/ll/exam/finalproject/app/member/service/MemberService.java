@@ -154,4 +154,9 @@ public class MemberService {
 
         return newRestCash;
     }
+
+    @Transactional
+    public Long getRestCash(Member member) {
+        return memberRepository.findById(member.getId()).get().getRestCash();
+    }
 }

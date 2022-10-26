@@ -36,4 +36,11 @@ public class MemberServiceTests {
         assertThat(foundMember.getUsername()).isNotNull();
         assertThat(passwordEncoder.matches(password, foundMember.getPassword())).isTrue();
     }
+
+    @Test
+    @DisplayName("예치금 설정")
+    void t2() {
+        Member member = memberService.findByUsername("user1").get();
+        System.out.println(member.getRestCash());
+    }
 }
