@@ -20,12 +20,14 @@ import static lombok.AccessLevel.PROTECTED;
 @Setter
 @SuperBuilder
 @ToString(callSuper = true)
-@NoArgsConstructor(access = PROTECTED)
+@NoArgsConstructor
 public class MyBook extends BaseEntity {
 
     @ManyToOne(fetch = LAZY)
+    @ToString.Exclude
     private Member member;
 
     @ManyToOne(fetch = LAZY)
+    @ToString.Exclude
     private Product product;
 }

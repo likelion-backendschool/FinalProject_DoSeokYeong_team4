@@ -28,14 +28,11 @@ public class Order extends BaseEntity {
     @ToString.Exclude
     private Member member;
 
-    private LocalDateTime payDate; // 결제 날짜
-
-    private boolean readyStatus; // 주문 완료 여부
-
+    private LocalDateTime refundDate;
+    private LocalDateTime payDate;
+    private LocalDateTime cancelDate;
     private boolean isPaid; // 결제 완료 여부
-
     private boolean isCanceled; // 취소 여부
-
     private boolean isRefunded; // 환불 여부
 
     private String name; // 주문 명
@@ -61,11 +58,20 @@ public class Order extends BaseEntity {
         return payPrice;
     }
 
-    public void setPaymentDone(Order order) {
+    public void setCancelDone() {
+        cancelDate = LocalDateTime.now();
+
+        isCanceled = true;
+    }
+
+    public void setPaymentDone() {
+        payDate = LocalDateTime.now();
+
         for (OrderItem orderItem : orderItems) {
             orderItem.setPaymentDone();
         }
-        order.setPaid(true);
+
+        isPaid = true;
     }
 
     public void setRefundDone() {
@@ -81,5 +87,22 @@ public class Order extends BaseEntity {
         }
 
         return payPrice;
+    }
+
+    public boolean isPayable() {
+        if ( isPaid ) return false;
+        if ( isCanceled ) return false;
+
+        return true;
+    }
+
+    public void makeName() {
+        String name = orderItems.get(0).getProduct().getSubject();
+
+        if (orderItems.size() > 1) {
+            name += " 외 %d권".formatted(orderItems.size() - 1);
+        }
+
+        this.name = name;
     }
 }

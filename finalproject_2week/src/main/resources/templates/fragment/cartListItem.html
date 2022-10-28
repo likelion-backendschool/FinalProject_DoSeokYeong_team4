@@ -4,54 +4,41 @@
 <body>
 <th:block th:fragment="cartListItem">
     <div class="card bg-base-100 shadow-xl">
-        <a th:href="@{|/product/${cartItem.product.id}|}" class="block">
+        <a th:href="@{|/product/${product.id}|}" class="block">
             <figure>
-                <svg width="200" height="200" th:data-jdenticon-value="${cartItem.product.jdenticon}"></svg>
+                <svg width="200" height="200" th:data-jdenticon-value="${product.jdenticon}"></svg>
             </figure>
         </a>
         <div class="card-body">
             <h2 class="card-title flex flex-wrap">
-                <a th:href="@{|/product/${cartItem.product.id}|}" class="mr-auto">
+                <a th:href="@{|/product/${product.id}|}" class="mr-auto">
                     <i class="fa-solid fa-book-open"></i>
-                    <span th:text="${cartItem.product.subject}"></span>
+                    <span th:text="${product.subject}"></span>
                 </a>
                 <div class="flex">
-                    <svg width="20" height="20" th:data-jdenticon-value="${cartItem.product.author.jdenticon}"></svg>
-                    <div th:text="${cartItem.product.author.name}"></div>
+                    <svg width="20" height="20" th:data-jdenticon-value="${product.author.jdenticon}"></svg>
+                    <div th:text="${product.author.name}"></div>
                 </div>
             </h2>
-            <div th:text="|￦ ${@ut.nf(cartItem.product.salePrice)}|"></div>
-            <div th:utext="${cartItem.product.extra_productTagLinks}"></div>
+            <div th:text="|￦ ${@ut.nf(product.salePrice)}|"></div>
+
             <div class="flex justify-end">
                 <div class="badge badge-outline">
                     <i class="fa-solid fa-pen"></i>
                     <span class="ml-2"
-                          th:text="${#temporals.format(cartItem.product.createDate, 'yy-MM-dd HH:mm')}"></span>
+                          th:text="${#temporals.format(product.createDate, 'yy-MM-dd')}"></span>
                 </div>
             </div>
-            <div th:if="${cartItem.product.createDate != cartItem.product.modifyDate}" class="flex justify-end">
-                <div class="badge">
-                    <i class="fa-solid fa-eraser"></i>
-                    <span class="ml-2"
-                          th:text="${#temporals.format(cartItem.product.modifyDate, 'yy-MM-dd HH:mm')}"></span>lear
-                </div>
-            </div>
-            <div class="card-actions justify-end">
-                <a th:href="@{|/product/${cartItem.product.id}|}" class="btn btn-sm">
+
+            <div class="card-actions justify-end mt-2">
+                <a th:href="@{|/product/${product.id}|}" class="btn btn-sm">
                     <i class="fa-solid fa-eye"></i>
                     <span class="ml-2">보기</span>
                 </a>
-                <a href="javascript:;"
-                   onclick="if ( confirm('정말로 삭제하시겠습니까?') ) $(this).next().submit();"
-                   class="btn btn-secondary btn-sm btn-outline">
-                    <i class="fa-solid fa-trash"></i>
-                    <span class="ml-1">삭제</span>
-                </a>
-                <form th:action="@{|/cart/remove/${cartItem.product.id}|}" method="post" hidden></form>
             </div>
         </div>
     </div>
+
 </th:block>
 </body>
-
 </html>

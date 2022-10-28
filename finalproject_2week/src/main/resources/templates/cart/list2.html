@@ -9,13 +9,14 @@
 <main layout:fragment="main">
 
     <section th:unless="${cartItemList != null && cartItemList.size > 0}"
-             class="section section-post-list flex-grow flex items-center justify-center">
-        <div>
+             class="section section-cart-items flex-grow flex items-center justify-center">
+        <div class="text-center">
             <div>장바구니에 상품이 존재하지 않습니다.</div>
+            <a href="/product/list" class="block text-link mt-2"><i class="fa-solid fa-book"></i> 도서 보러가기</a>
         </div>
     </section>
 
-    <section th:if="${cartItemList != null && cartItemList.size > 0}" class="section section-post-list container mx-auto">
+    <section th:if="${cartItemList != null && cartItemList.size > 0}" class="section section-cart-items container mx-auto">
 
         <div class="px-2 pt-4">
             <h1 class="font-bold text-lg">
@@ -30,11 +31,11 @@
                 </label>
 
                 <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 mt-4">
-                    <li th:each="cartItem : ${cartItemList}" th:with="product=${cartItem.product}">
+                    <li th:each="item : ${items}" th:with="product=${item.product}">
                         <input type="checkbox" class="Cart_ItemCheckbox checkbox"
-                               th:value="${cartItem.id}">
+                               th:value="${item.id}">
 
-                        <th:block th:replace="fragment/cartListItem :: cartListItem"></th:block>
+                        <th:block th:replace="fragment/cartItem :: cartItem"></th:block>
                     </li>
                 </ul>
 

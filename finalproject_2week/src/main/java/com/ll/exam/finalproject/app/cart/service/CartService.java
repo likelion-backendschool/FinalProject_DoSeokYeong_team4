@@ -6,6 +6,7 @@ import com.ll.exam.finalproject.app.member.entity.Member;
 import com.ll.exam.finalproject.app.product.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,9 +15,11 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CartService {
     private final CartRepository cartRepository;
 
+    @Transactional
     public Map<String, String> addItem(Member member, Product productOption) {
         Map<String, String> result = new HashMap<>();
 
@@ -40,6 +43,7 @@ public class CartService {
         return result;
     }
 
+    @Transactional
     public void deleteItem(CartItem cartItem) {
         cartRepository.delete(cartItem);
     }
@@ -50,5 +54,17 @@ public class CartService {
 
     public List<CartItem> findByMemberId(Long memberId) {
         return cartRepository.findByMemberId(memberId);
+    }
+
+    public Optional<CartItem> findItemById(long id) {
+        return cartRepository.findById(id);
+    }
+
+    public boolean actorCanDelete(Member buyer, CartItem cartItem) {
+        return buyer.getId().equals(cartItem.getMember().getId());
+    }
+
+    public List<CartItem> getCartItemsByBuyerIdProductIdIn(long buyerId, long[] productIds) {
+        return cartRepository.findAllByMemberIdAndProductIdIn(buyerId, productIds);
     }
 }

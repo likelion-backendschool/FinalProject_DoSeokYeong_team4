@@ -50,7 +50,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public String detail(@PathVariable Long id, Model model) {
-        Product product = productService.findForPrintById(id).get();
+        Product product = productService.findForPrintById(id, rq.getMember()).get();
         List<Post> posts = productService.findPostsByProduct(product);
 
         model.addAttribute("product", product);
@@ -71,11 +71,9 @@ public class ProductController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}/modify")
     public String showModify(@PathVariable long id, Model model) {
-        Product product = productService.findForPrintById(id).get();
+        Product product = productService.findForPrintById(id, rq.getMember()).get();
 
-        Member actor = rq.getMember();
-
-        if (productService.actorCanModify(actor, product) == false) {
+        if (productService.actorCanModify(rq.getMember(), product) == false) {
             throw new ActorCanNotModifyException();
         }
 
