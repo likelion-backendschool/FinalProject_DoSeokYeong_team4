@@ -236,7 +236,7 @@ public class OrderService {
         return RsData.of("S-1", "환불할 수 있습니다.");
     }
 
-    public List<OrderItem> findAllByPayDateBetween(LocalDateTime fromDate, LocalDateTime toDate) {
+    public List<OrderItem> findAllByPayDateBetweenOrderByIdAsc(LocalDateTime fromDate, LocalDateTime toDate) {
         return orderItemRepository.findAllByPayDateBetween(fromDate, toDate);
     }
 }
