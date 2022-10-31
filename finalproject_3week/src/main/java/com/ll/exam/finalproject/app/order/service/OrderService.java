@@ -9,6 +9,7 @@ import com.ll.exam.finalproject.app.mybook.service.MyBookService;
 import com.ll.exam.finalproject.app.order.entity.Order;
 import com.ll.exam.finalproject.app.order.repository.OrderRepository;
 import com.ll.exam.finalproject.app.orderitem.entity.OrderItem;
+import com.ll.exam.finalproject.app.orderitem.repository.OrderItemRepository;
 import com.ll.exam.finalproject.app.product.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class OrderService {
     private final CartService cartService;
     private final OrderRepository orderRepository;
     private final MyBookService myBookService;
+    private final OrderItemRepository orderItemRepository;
 
     @Transactional
     public Order createFromCart(Member member) {
@@ -232,5 +234,9 @@ public class OrderService {
         }
 
         return RsData.of("S-1", "환불할 수 있습니다.");
+    }
+
+    public List<OrderItem> findAllByPayDateBetween(LocalDateTime fromDate, LocalDateTime toDate) {
+        return orderItemRepository.findAllByPayDateBetween(fromDate, toDate);
     }
 }
