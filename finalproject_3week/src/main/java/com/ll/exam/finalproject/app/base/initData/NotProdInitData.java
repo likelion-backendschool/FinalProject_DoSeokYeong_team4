@@ -3,6 +3,8 @@ package com.ll.exam.finalproject.app.base.initData;
 import com.ll.exam.finalproject.app.cart.service.CartService;
 import com.ll.exam.finalproject.app.member.entity.Member;
 import com.ll.exam.finalproject.app.member.service.MemberService;
+import com.ll.exam.finalproject.app.order.entity.Order;
+import com.ll.exam.finalproject.app.order.service.OrderService;
 import com.ll.exam.finalproject.app.post.service.PostService;
 import com.ll.exam.finalproject.app.product.entity.Product;
 import com.ll.exam.finalproject.app.product.service.ProductService;
@@ -21,7 +23,8 @@ public class NotProdInitData {
             MemberService memberService,
             PostService postService,
             ProductService productService,
-            CartService cartService
+            CartService cartService,
+            OrderService orderService
     ) {
         return args -> {
             if (initDataDone) {
@@ -32,7 +35,7 @@ public class NotProdInitData {
 
             Member member1 = memberService.join("user1", "1234", "user1@test.com", null);
             Member member2 = memberService.join("user2", "1234", "user2@test.com", "홍길순");
-            Member member3 = memberService.join("admin", "1234", "user3@test.com", "admin");
+            Member admin = memberService.join("admin", "1234", "user3@test.com", "admin");
 
             postService.write(
                     member1,
@@ -72,10 +75,21 @@ public class NotProdInitData {
             Product product3 = productService.create(member1, "상품명3", 50_000, "REACT", "#IT #REACT");
             Product product4 = productService.create(member2, "상품명4", 60_000, "HTML", "#IT #HTML");
 
+
+            // member1 물품 추가 후 결제
             cartService.addItem(member1, product1);
             cartService.addItem(member1, product2);
+            memberService.addCash(member1, 100_000, "예치금 충전"); // member1 예치금 100,000 설정
+            Order order1 = orderService.createFromCart(member1);
+            orderService.payByRestCashOnly(order1);
 
-            memberService.addCash(member1, 100_000, "예치금 충전"); // 멤버1 예치금 십만 설정
+            // member2 물품 추가 후 결제
+            cartService.addItem(member2, product2);
+            cartService.addItem(member2, product3);
+            memberService.addCash(member2, 200_000, "예치금 충전"); // member2 예치금 200,000 설정
+            Order order2 = orderService.createFromCart(member2);
+            orderService.payByRestCashOnly(order2);
+
         };
     }
 }

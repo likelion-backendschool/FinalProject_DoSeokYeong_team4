@@ -35,6 +35,9 @@ public class RebateController {
     @GetMapping("/rebateOrderItemList")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String showRebateOrderItemList(@RequestParam String yearMonth, Model model) {
+        if (yearMonth == null) {
+            yearMonth = "2022-11";
+        }
         List<RebateOrderItem> items = rebateService.findRebateOrderItemsByPayDateIn(yearMonth);
 
         model.addAttribute("items", items);
