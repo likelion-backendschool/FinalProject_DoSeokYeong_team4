@@ -2,8 +2,11 @@ package com.ll.exam.finalproject.app.rebate.controller;
 
 import com.ll.exam.finalproject.app.base.dto.RsData;
 import com.ll.exam.finalproject.app.base.rq.Rq;
+import com.ll.exam.finalproject.app.cart.entity.CartItem;
+import com.ll.exam.finalproject.app.member.entity.Member;
 import com.ll.exam.finalproject.app.rebate.entity.RebateOrderItem;
 import com.ll.exam.finalproject.app.rebate.service.RebateService;
+import com.ll.exam.finalproject.util.Ut;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -11,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -49,17 +54,40 @@ public class RebateController {
 
     @PostMapping("/rebate")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public String rebateAll() {
-        return null;
+    public String rebateAll(String ids, HttpServletRequest req) {
+
+        String[] idsArr = ids.split(",");
+
+        Arrays.stream(idsArr)
+                .mapToLong(Long::parseLong)
+                .forEach(id -> {
+                    rebateService.rebate(id);
+                });
+
+        String referer = req.getHeader("Referer");
+
+        String yearMonth = Ut.url.getQueryParamValue(referer, "yearMonth", "");
+
+        String redirect = "redirect:/adm/rebate/rebateOrderItemList?yearMonth=" + yearMonth;
+        redirect += "&msg=" + Ut.url.encode("%d건의 정산품목을 정산처리하였습니다.".formatted(idsArr.length));
+
+        return redirect;
     }
 
     @PostMapping("/rebateOne/{rebateOrderItemId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    @ResponseBody
-    public String rebateOne(@PathVariable Long rebateOrderItemId) {
+    public String rebateOne(@PathVariable Long rebateOrderItemId, HttpServletRequest req) {
 
         RsData rebateRsData = rebateService.rebate(rebateOrderItemId);
 
-        return rebateRsData.getMsg();
+        String referer = req.getHeader("Referer");
+
+        String yearMonth = Ut.url.getQueryParamValue(referer, "yearMonth", "");
+
+        String redirect = "redirect:/adm/rebate/rebateOrderItemList?yearMonth=" + yearMonth;
+
+        redirect = rebateRsData.addMsgToUrl(redirect);
+
+        return redirect;
     }
 }
