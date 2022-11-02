@@ -52,6 +52,12 @@ public class RebateController {
         return "adm/rebate/list";
     }
 
+    @GetMapping("/loadData")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String loadRebateData() {
+        return "adm/home/loadData";
+    }
+
     @PostMapping("/rebate")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String rebateAll(String ids, HttpServletRequest req) {

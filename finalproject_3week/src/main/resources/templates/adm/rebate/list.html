@@ -10,7 +10,11 @@
         <div>
             <h1>정산데이터 목록</h1>
 
-            <div class="overflow-x-auto">
+            <div th:unless="${#lists.size(items)>0}" class="overflow-x-auto">
+                <h1>정산 데이터가 없습니다.</h1>
+            </div>
+
+            <div th:if="${#lists.size(items)>0}" class="overflow-x-auto">
                 <table class="table table-compact w-full">
                     <thead>
                     <tr>

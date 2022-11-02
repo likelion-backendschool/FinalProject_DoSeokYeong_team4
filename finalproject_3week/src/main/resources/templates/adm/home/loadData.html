@@ -2,19 +2,19 @@
 <html layout:decorate="~{/adm/layout/layout}">
 
 <head>
-    <title>정산 데이터 생성</title>
+    <title>정산 데이터 불러오기</title>
 </head>
 
 <main layout:fragment="main">
     <div class="container mx-auto flex-grow flex items-center justify-center">
-        <h1>정산 데이터 생성</h1>
-        <form th:action="@{|/adm/rebate/makeData|}" method="POST">
+        <h1>정산 데이터 불러오기</h1>
+        <form th:action="@{|/adm/rebate/rebateOrderItemList|}">
             <div>
                 <input type="month" name="yearMonth">
                 <div>
                     <button class="btn btn-primary" type="submit">
                         <i class="fa-solid fa-pen"></i>
-                        <span class="ml-1">생성</span>
+                        <span class="ml-1">불러오기</span>
                     </button>
                 </div>
             </div>
