@@ -52,11 +52,13 @@ public class RebateService {
     public void makeRebateOrderItem(RebateOrderItem item) {
         RebateOrderItem oldRebateOrderItem = rebateRepository.findByOrderItemId(item.getOrderItem().getId()).orElse(null);
 
-        if (oldRebateOrderItem != null) {
-            rebateRepository.delete(oldRebateOrderItem);
+//        if (oldRebateOrderItem != null) {
+//            rebateRepository.delete(oldRebateOrderItem);
+//        }
+        if (oldRebateOrderItem == null) {
+            rebateRepository.save(item);
         }
 
-        rebateRepository.save(item);
     }
 
     public RebateOrderItem toRebateOrderItem(OrderItem orderItem) {
