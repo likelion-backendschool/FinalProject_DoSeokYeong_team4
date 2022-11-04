@@ -8,7 +8,7 @@
 <body>
 <main layout:fragment="main">
     <section class="section section-post-list container mx-auto">
-
+        <input type="hidden" id="csrf_token" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" disabled/>
         <div class="px-2 pt-4">
             <h1 class="font-bold text-lg">
                 <i class="fa-solid fa-book"></i>
@@ -17,14 +17,40 @@
 
             <div class="mt-2">
                 <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+
                     <li th:each="product : ${products}">
-                        <th:block th:replace="fragment/productListItem :: productListItem" ></th:block>
+                        <th:block th:replace="fragment/productListItem :: productListItem"></th:block>
                     </li>
                 </ul>
             </div>
         </div>
     </section>
+    <script th:inline="javascript" type='text/javascript'>
+        const token = document.getElementById('csrf_token');
 
+        function addCart(__input) {
+            if ([[${@rq.member}]] == null) {
+                const link = "/member/login";
+                location.href = link;
+            }
+            const product = __input;
+
+            fetch(product.dataset.uri, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': token.value  // 필수! 안 해주면 "403 forbidden" 오류
+                },
+                body: JSON.stringify({
+                    "productId": product.id
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                        successModal(data.result);
+                })
+        }
+    </script>
 </main>
 </body>
 </html>

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/html">
-
 <body>
 <th:block th:fragment="productListItem">
     <div class="card bg-base-100 shadow-xl">
@@ -37,7 +36,10 @@
                 </div>
             </div>
             <div class="card-actions justify-end">
-                <a th:href class="btn btn-sm">
+                <a class="btn btn-sm"
+                   th:data-uri="@{|/cart/add/${product.id}|}"
+                   th:id="|${product.id}|"
+                th:onclick="addCart(this)">
                     <i class="fa-solid fa-cart-plus"></i>
                     <span class="ml-2">장바구니</span>
                 </a>
@@ -51,5 +53,4 @@
     </div>
 </th:block>
 </body>
-
 </html>
