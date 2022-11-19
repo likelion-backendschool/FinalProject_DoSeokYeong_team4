@@ -11,6 +11,7 @@ import com.ll.exam.finalproject.app.member.entity.Member;
 import com.ll.exam.finalproject.app.member.exception.AlreadyJoinException;
 import com.ll.exam.finalproject.app.member.repository.MemberRepository;
 import com.ll.exam.finalproject.app.security.dto.MemberContext;
+import com.ll.exam.finalproject.app.security.jwt.JwtProvider;
 import com.ll.exam.finalproject.util.Ut;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.Map;
 import java.util.Optional;
@@ -33,6 +35,7 @@ public class MemberService {
     private final EmailVerificationService emailVerificationService;
     private final EmailService emailService;
     private final CashService cashService;
+    private final JwtProvider jwtProvider;
 
     @Transactional
     public Member join(String username, String password, String email, String nickname) {
@@ -133,7 +136,7 @@ public class MemberService {
     }
 
     private void forceAuthentication(Member member) {
-        MemberContext memberContext = new MemberContext(member, member.genAuthorities());
+        MemberContext memberContext = new MemberContext(member, member.getAuthorities());
 
         UsernamePasswordAuthenticationToken authentication =
                 UsernamePasswordAuthenticationToken.authenticated(
@@ -172,5 +175,17 @@ public class MemberService {
 
     public Optional<Member> findById(long id) {
         return memberRepository.findById(id);
+    }
+
+    @Transactional
+    public String getAccessToken(Member member) {
+        String accessToken = member.getAccessToken();
+
+        if (StringUtils.hasLength(accessToken) == false) {
+            accessToken = jwtProvider.generateAccessToken(member.getAccessTokenClaims(), 60L * 60 * 24 * 365 * 10);
+            member.setAccessToken(accessToken);
+        }
+
+        return accessToken;
     }
 }
