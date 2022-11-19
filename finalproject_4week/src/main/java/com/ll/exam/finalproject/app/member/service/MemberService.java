@@ -2,6 +2,7 @@ package com.ll.exam.finalproject.app.member.service;
 
 import com.ll.exam.finalproject.app.AppConfig;
 import com.ll.exam.finalproject.app.base.dto.RsData;
+import com.ll.exam.finalproject.app.base.entity.BaseEntity;
 import com.ll.exam.finalproject.app.cash.entity.CashLog;
 import com.ll.exam.finalproject.app.cash.service.CashService;
 import com.ll.exam.finalproject.app.email.service.EmailService;
@@ -146,8 +147,10 @@ public class MemberService {
     }
 
     @Transactional
-    public RsData<Map<String, Object>> addCash(Member member, long changePrice, String eventType) {
-        CashLog cashLog = cashService.addCash(member, changePrice, eventType);
+    public RsData<Map<String, Object>> addCash(Member member, long changePrice,
+                                               BaseEntity relEntity, CashLog.EvenType eventType) {
+        CashLog cashLog = cashService.addCash(member, changePrice, relEntity.getModelName(),
+                relEntity.getId(), eventType);
 
         long newRestCash = member.getRestCash() + cashLog.getPrice();
         member.setRestCash(newRestCash);
@@ -165,5 +168,9 @@ public class MemberService {
 
     public Long getRestCash(Member member) {
         return memberRepository.findById(member.getId()).get().getRestCash();
+    }
+
+    public Optional<Member> findById(long id) {
+        return memberRepository.findById(id);
     }
 }

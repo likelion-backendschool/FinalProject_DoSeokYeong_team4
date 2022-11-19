@@ -12,10 +12,12 @@ public class CashService {
 
     private final CashLogRepository cashLogRepository;
 
-    public CashLog addCash(Member member, long price, String eventType) {
+    public CashLog addCash(Member member, long price, String relTypeCode, long relId, CashLog.EvenType eventType) {
         CashLog cashLog = CashLog.builder()
                 .member(member)
                 .price(price)
+                .relTypeCode(relTypeCode)
+                .relId(relId)
                 .eventType(eventType)
                 .build();
 

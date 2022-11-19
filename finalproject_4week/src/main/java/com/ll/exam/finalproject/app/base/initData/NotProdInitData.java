@@ -1,6 +1,7 @@
 package com.ll.exam.finalproject.app.base.initData;
 
 import com.ll.exam.finalproject.app.cart.service.CartService;
+import com.ll.exam.finalproject.app.cash.entity.CashLog;
 import com.ll.exam.finalproject.app.member.entity.Member;
 import com.ll.exam.finalproject.app.member.service.MemberService;
 import com.ll.exam.finalproject.app.order.entity.Order;
@@ -79,14 +80,14 @@ public class NotProdInitData {
             // member1 물품 추가 후 결제
             cartService.addItem(member1, product1);
             cartService.addItem(member1, product2);
-            memberService.addCash(member1, 100_000, "예치금 충전"); // member1 예치금 100,000 설정
+            memberService.addCash(member1, 100_000, member1,CashLog.EvenType.충전__무통장입금); // member1 예치금 100,000 설정
             Order order1 = orderService.createFromCart(member1);
             orderService.payByRestCashOnly(order1);
 
             // member2 물품 추가 후 결제
             cartService.addItem(member2, product2);
             cartService.addItem(member2, product3);
-            memberService.addCash(member2, 200_000, "예치금 충전"); // member2 예치금 200,000 설정
+            memberService.addCash(member2, 200_000, member2,CashLog.EvenType.충전__무통장입금); // member2 예치금 200,000 설정
             Order order2 = orderService.createFromCart(member2);
             orderService.payByRestCashOnly(order2);
 

@@ -86,7 +86,11 @@ public class RebateService {
 
         int calculateRebatePrice = rebateOrderItem.calculateRebatePrice();
 
-        RsData<Map<String, Object>> addCashRsData = memberService.addCash(rebateOrderItem.getProduct().getAuthor(), calculateRebatePrice, "정산__%d__지급__예치금".formatted(rebateOrderItem.getOrderItem().getId()));
+        RsData<Map<String, Object>> addCashRsData = memberService.addCash(
+                rebateOrderItem.getProduct().getAuthor(),
+                calculateRebatePrice,
+                rebateOrderItem,
+                CashLog.EvenType.작가정산__예치금);
         CashLog cashLog = (CashLog) addCashRsData.getData().get("cashLog");
 
         rebateOrderItem.setRebateDone(cashLog.getId());
