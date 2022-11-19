@@ -18,7 +18,7 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class PostService {
     private final PostRepository postRepository;
     private final PostTagService postTagService;
@@ -42,6 +42,7 @@ public class PostService {
         return postRepository.findById(postId);
     }
 
+    @Transactional
     public void applyPostTags(Post post, String postTagContents) {
         postTagService.applyPostTags(post, postTagContents);
     }
@@ -50,6 +51,7 @@ public class PostService {
         return postTagService.getPostTags(post);
     }
 
+    @Transactional
     public void modify(Post post, String subject, String content, String contentHtml, String postTagContents) {
         post.setSubject(subject);
         post.setContent(content);
@@ -123,13 +125,14 @@ public class PostService {
         return posts;
     }
 
+    @Transactional
     public void remove(Post post) {
         postRepository.delete(post);
     }
 
     public boolean actorCanSee(Member actor, Post post) {
-        if ( actor == null ) return false;
-        if ( post == null ) return false;
+        if (actor == null) return false;
+        if (post == null) return false;
 
         return post.getAuthor().getId().equals(actor.getId());
     }

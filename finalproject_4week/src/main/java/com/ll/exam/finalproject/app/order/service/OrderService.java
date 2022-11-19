@@ -3,6 +3,7 @@ package com.ll.exam.finalproject.app.order.service;
 import com.ll.exam.finalproject.app.base.dto.RsData;
 import com.ll.exam.finalproject.app.cart.entity.CartItem;
 import com.ll.exam.finalproject.app.cart.service.CartService;
+import com.ll.exam.finalproject.app.cash.entity.CashLog;
 import com.ll.exam.finalproject.app.member.entity.Member;
 import com.ll.exam.finalproject.app.member.service.MemberService;
 import com.ll.exam.finalproject.app.mybook.service.MyBookService;
@@ -78,7 +79,7 @@ public class OrderService {
             throw new RuntimeException("잔액 부족");
         }
 
-        memberService.addCash(member, payPrice * -1, "주문__%d__사용__예치금".formatted(order.getId()));
+        memberService.addCash(member, payPrice * -1, order,CashLog.EvenType.사용__토스페이먼츠_주문결제);
 
         order.setPaymentDone();
 
@@ -100,7 +101,7 @@ public class OrderService {
         order.setCancelDone();
 
         int payPrice = order.getPayPrice();
-        memberService.addCash(order.getMember(), payPrice, "주문__%d__환불__예치금".formatted(order.getId()));
+        memberService.addCash(order.getMember(), payPrice, order, CashLog.EvenType.환불__예치금_주문결제);
 
         order.setRefundDone();
         orderRepository.save(order);
@@ -160,11 +161,11 @@ public class OrderService {
         int payPrice = order.calculatePayPrice();
 
         long pgPayPrice = payPrice - useRestCash;
-        memberService.addCash(buyer, pgPayPrice, "주문__%d__충전__토스페이먼츠".formatted(order.getId()));
-        memberService.addCash(buyer, pgPayPrice * -1, "주문__%d__사용__토스페이먼츠".formatted(order.getId()));
+        memberService.addCash(buyer, pgPayPrice, order, CashLog.EvenType.충전__토스페이먼츠);
+        memberService.addCash(buyer, pgPayPrice * -1, order, CashLog.EvenType.사용__토스페이먼츠_주문결제);
 
         if (useRestCash > 0) {
-            memberService.addCash(buyer, useRestCash * -1, "주문__%d__사용__예치금".formatted(order.getId()));
+            memberService.addCash(buyer, useRestCash * -1, order, CashLog.EvenType.사용__예치금_주문결제);
         }
 
         order.setPaymentDone();

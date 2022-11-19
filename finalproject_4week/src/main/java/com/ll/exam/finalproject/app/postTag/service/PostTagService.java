@@ -10,10 +10,7 @@ import com.ll.exam.finalproject.app.productTag.entity.ProductTag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,21 +27,12 @@ public class PostTagService {
                 .filter(s -> s.length() > 0)
                 .collect(Collectors.toList());
 
-        List<PostTag> needToDelete = new ArrayList<>();
+        Set<PostTag> newPostTags = postKeywordContents
+                .stream()
+                .map(postKeywordContent -> savePostTag(post, postKeywordContent))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
 
-        for (PostTag oldPostTag : oldPostTags) {
-            boolean contains = postKeywordContents.stream().anyMatch(s -> s.equals(oldPostTag.getPostKeyword().getContent()));
-
-            if (contains == false) {
-                needToDelete.add(oldPostTag);
-            }
-        }
-
-        needToDelete.forEach(postTag -> postTagRepository.delete(postTag));
-
-        postKeywordContents.forEach(postKeywordContent -> {
-            savePostTag(post, postKeywordContent);
-        });
+        post.updatePostTags(newPostTags);
     }
 
     private PostTag savePostTag(Post post, String postKeywordContent) {

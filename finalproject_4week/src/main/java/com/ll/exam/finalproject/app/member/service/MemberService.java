@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import org.springframework.cache.annotation.Cacheable;
 import java.util.Map;
 import java.util.Optional;
 
@@ -187,5 +188,23 @@ public class MemberService {
         }
 
         return accessToken;
+    }
+
+    public boolean verifyWithWhiteList(Member member, String token) {
+        return member.getAccessToken().equals(token);
+    }
+
+    @Cacheable("member")
+    public Map<String, Object> getMemberMapByUsername__cached(String username) {
+        Member member = findByUsername(username).orElse(null);
+
+        return member.toMap();
+    }
+
+    public Member getByUsername__cached(String username) {
+        MemberService thisObj = (MemberService) AppConfig.getContext().getBean("memberService");
+        Map<String, Object> memberMap = thisObj.getMemberMapByUsername__cached(username);
+
+        return Member.fromMap(memberMap);
     }
 }
